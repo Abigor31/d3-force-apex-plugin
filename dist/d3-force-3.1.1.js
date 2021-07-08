@@ -22,7 +22,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
     /* exported netGobrechtsD3Force */
     /* globals apex, $v, navigator, d3, document, console, window, clearInterval, ActiveXObject, DOMParser, setTimeout */
     /* jshint -W101 */
-
+//Степан был здесь
     "use strict";
 
     // setup graph variable
