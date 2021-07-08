@@ -886,7 +886,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                         return n.x+n.radius+2;
                     })
                     .attr("y", function(n) {
-                        return n.y - n.radius+4;;
+                        return n.y - n.radius+2;;
                     });	
 //Привязка рамки к ноду во время перетаскивания узла
 				v.main.contur 
@@ -3596,13 +3596,13 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					})
 			  
             .attr("y", function(n) {         
-					return (n.y - n.radius+4);
+					return (n.y - n.radius+2);
 					})
             .style("color", function(n) {
                 return (v.tools.color(n.COLORDESCR));
             })
 			.attr({
-                            'width': 80,
+                            'width': 60,
                             'height': function(n) {return (n.radius*2-4)}
                         });
 			v.main.descriptions.exit().remove();
@@ -3616,7 +3616,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 				.attr("class", function(n){ return "descrip"+item.ID })
 				.style({
 						"margin": 0,
-						"font-size": 9+"px"
+						"font-size": 7+"px"
 					  })
 	    		.html (function (n) { return n.par})
 			});   
