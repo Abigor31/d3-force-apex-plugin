@@ -23,7 +23,7 @@
   <link href="d3-force-3.1.1.css" rel="stylesheet" type="text/css">
   <script src="lib/resize-observer-polyfill/ResizeObserver-1.5.0.min.js"></script>
   <script src="lib/d3/d3-3.5.6.min.js"></script>
-  <script src="d3-force-3.1.1.min.js"></script>
+  <script src="d3-force-3.1.1.js"></script>
   <script>
     window.onload = function () {
       example = netGobrechtsD3Force('example')
@@ -34,7 +34,76 @@
         .lassoMode(true)
         .wrapLabels(true)
         .debug(true) //to enable the customization wizard
-        .render(); //sample data is provided when called without data
+        .render({
+    "data": {
+        "nodes": [{
+                "ID": "7839",
+                "LABEL": "KING is THE KING, you know?",
+                "COLORVALUE": "#7fffd4",
+                "COLORLABEL": "#7fffd4",
+                "COLORDESCR": "#7fffd4",
+                "SIZEVALUE": 5000,
+                "PARAM": [{"par": "111.444"}, {"par":"1221.12"}, {"par":"121.222"}, {"par":"112.444"}],
+                "LABELCIRCULAR": true,
+                "LINK": "http://apex.oracle.com/",
+                "INFOSTRING": 'This visualization is \n based on the well known emp table.'
+            },
+            {
+                "ID": "7698",
+                "LABEL": "BLAKE и Васяuuuuuuuuuuuuuu идут в театр",
+                "COLORVALUE": "#7fffd4",
+                "COLORLABEL": "#7fffd4",
+                "COLORDESCR": "#7fffd4",
+                "PARAM": [{"par": "111.222"}, {"par":"333.666"}],
+                "SIZEVALUE": 2850,
+                "INFOSTRING": "Получилося 111"
+            },
+            {
+                "ID": "7688",
+                "LABEL": "BLAKE и Вася идут в театр",
+                "COLORVALUE": "#7fffd4",
+                "COLORLABEL": "#7fffd4",
+                "COLORDESCR": "#7fffd4",
+                "PARAM": [{"par": "899.000"}, {"par":"888.999"}],
+                "SIZEVALUE": 2850,
+                "INFOSTRING": "Получилося 111 екек"
+            },
+            {
+                "ID": "7677",
+                "LABEL": "BLAKE и Вася идут в театр",
+                "COLORVALUE": "#7fffd4",
+                "COLORLABEL": "#7fffd4",
+                "COLORDESCR": "#7fffd4",
+                "PARAM": [{"par": "531.123"}, {"par":"879.765"}],
+                "SIZEVALUE": 2850,
+                "INFOSTRING": "Получилося 111 екек"
+            }
+        ],
+        "links": [{
+                "FROMID": "7839",
+                "TOID": "",
+                "STYLE": "dotted",
+                "COLOR": "blue",
+                "INFOSTRING": "This is a self link (same source and target node) rendered along a path with the STYLE attribute set to dotted and COLOR attribute set to blue."
+            },
+            {
+                "FROMID": "7698",
+                "TOID": "7839",
+                "STYLE": "dashed"
+            },
+            {
+                "FROMID": "7698",
+                "TOID": "7688",
+                "STYLE": "dashed"
+            },
+            {
+                "FROMID": "7839",
+                "TOID": "7677",
+                "STYLE": "dashed"
+            }
+        ]
+    }
+}); //sample data is provided when called without data
       //see also https://ogobrecht.github.io/d3-force-apex-plugin/tutorial-1-getting-started.html
     }
   </script>
