@@ -22,7 +22,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
     /* exported netGobrechtsD3Force */
     /* globals apex, $v, navigator, d3, document, console, window, clearInterval, ActiveXObject, DOMParser, setTimeout */
     /* jshint -W101 */
-//Степан был здесь
+
     "use strict";
 
     // setup graph variable
@@ -602,7 +602,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
         v.data.sampleData = '<data>' +
             '<nodes ID="7839" LABEL="KING is THE KING, you know?" LABELCIRCULAR="true" COLORVALUE="10" ' +
             'COLORLABEL="Accounting" SIZEVALUE="5000" LINK="http://apex.oracle.com/" ' +
-            'INFOSTRING="This visualization is based on the well known emp table." />' +
+            'INFOSTRING="This visualization is based on the well known emp table." />' + 
             '<nodes ID="7698" LABEL="BLAKE" COLORVALUE="30" COLORLABEL="Sales" SIZEVALUE="2850" />' +
             '<nodes ID="7782" LABEL="CLARK" COLORVALUE="10" COLORLABEL="Accounting" SIZEVALUE="2450" />' +
             '<nodes ID="7566" LABEL="JONES" COLORVALUE="20" COLORLABEL="Research" SIZEVALUE="2975" />' +
@@ -878,6 +878,27 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                     .attr("cy", function(n) {
                         return n.y;
                     });
+					
+					
+//Привязка описания к ноду во время перетаскивания узла	
+				v.main.descriptions
+                    .attr("x", function(n) {
+                        return n.x+n.radius+2;
+                    })
+                    .attr("y", function(n) {
+                        return n.y - n.radius+4;;
+                    });	
+//Привязка рамки к ноду во время перетаскивания узла
+				v.main.contur 
+					.attr("d", function(n) {  return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
+													"L" + (n.x+60) + "," + (n.y - n.radius+2)+" " + 
+													"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+65)+","+(n.y - n.radius+7) + " " +
+													"L" + (n.x+65) + "," + (n.y + n.radius-7) +
+													"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+60)+","+(n.y + n.radius-2) + " " +
+													"L" + n.x + "," + (n.y + n.radius-2)	
+											}
+						  );	
+					
                 if ( (new Date().getTime() - v.status.forceStartTime) > v.conf.forceTimeLimit){
                     v.main.force.stop();
                 }
@@ -1614,6 +1635,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
         v.main.nodes.classed("highlighted", function(n) {
             return v.tools.neighboring(n, node);
         });
+		//Выделение показателей
+		//для случая с foreignObject - XHTML
+		v.main.descriptions.filter(".description"+node.ID).style("font-weight", "bold");
+
         v.main.links
             .classed("highlighted", function(l) {
                 return l.source.ID === node.ID || l.target.ID === node.ID;
@@ -1658,6 +1683,8 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
     // on node mouse leave function
     v.tools.onNodeMouseleave = function(node) {
         v.main.nodes.classed("highlighted", false);
+		//для случая с foreignObject - XHTML
+		v.main.descriptions.filter(".description"+node.ID).style("font-weight", "normal");
         v.main.links
             .classed("highlighted", false)
             .style("marker-end", v.tools.getMarkerUrl);
@@ -3529,6 +3556,70 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                 return (n.IMAGE ? "url(#" + v.tools.getPatternId(n) + ")" : v.tools.color(n.COLORVALUE));
             });
 
+//Контурная рамка для показателя			
+			v.main.contur = v.dom.graph.selectAll("path")
+            .data(v.data.nodes,
+                function(n) {
+                    return n.ID;
+                })
+			.enter()
+			.append("path")
+			.attr("d", function(n) { return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
+											"L" + (n.x+60) + "," + (n.y - n.radius+2)+" " + 
+											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+65)+","+(n.y - n.radius+7) + " " +
+											"L" + (n.x+65) + "," + (n.y + n.radius-7) +
+											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+60)+","+(n.y + n.radius-2) + " " +
+											"L" + n.x + "," + (n.y + n.radius-2)	 
+									}
+				)
+			.style( "stroke", function(n) {
+                return v.tools.color(n.COLORVALUE);
+            })
+			.style("fill", "none")
+			.style("stroke-width", 1);			
+//Добавим тег foreignObject в соответствии с количеством узлов и присвоим класс =description + ID узла, 
+//для связки текста с конкретным узлом
+//Для вставки html используем foreignObject 			
+			v.main.descriptions = v.dom.graph.selectAll("foreignObject")
+            .data(v.data.nodes,
+                function(n) {
+                    return n.ID;
+                });
+			v.main.descriptions
+			.enter()
+			.append("foreignObject")
+			.attr("class", function(n) {
+                    return "description"+n.ID;
+                })
+            .attr("x", function(n) {              
+					return (n.x+n.radius+2);
+					})
+			  
+            .attr("y", function(n) {         
+					return (n.y - n.radius+4);
+					})
+            .style("color", function(n) {
+                return (v.tools.color(n.COLORDESCR));
+            })
+			.attr({
+                            'width': 80,
+                            'height': function(n) {return (n.radius*2-4)}
+                        });
+			v.main.descriptions.exit().remove();
+//Для каждого узла для тега foreignObject присвоим ему параметры в p 
+//То есть ищем все foreignObject c классом 	= description + ID узла и добавляем туда p = количество параметров			
+			v.data.nodes.forEach(function(item, counter){
+				v.main.tdescr = v.main.descriptions.filter(".description"+item.ID).selectAll("p").filter(".descrip"+item.ID)
+				.data(item.PARAM, function(n){ return n.par })
+				.enter()
+				.append("xhtml:p")
+				.attr("class", function(n){ return "descrip"+item.ID })
+				.style({
+						"margin": 0,
+						"font-size": 9+"px"
+					  })
+	    		.html (function (n) { return n.par})
+			});   
 
         // LABELS
 
