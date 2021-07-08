@@ -8,17 +8,22 @@
     line-height: normal;
     background-color: #fff
 }
+
+.node {cursor:pointer;}
+
 .net_gobrechts_d3_force.border {
     border: 1px solid silver;
     border-radius: 5px;
 }
 .net_gobrechts_d3_force circle.highlighted {
-    stroke: #555;
-    stroke-width: 2px;
+    /*stroke: #555;*/
+    stroke: #18a0fb;
+	stroke-width: 2px;
     stroke-opacity: 1.0;
 }
 .net_gobrechts_d3_force circle.selected {
-    stroke: #555;
+    /*stroke: #555;*/
+	stroke: #18a0fb;
     stroke-width: 4px;
     stroke-dasharray: 4 2;
     stroke-opacity: 1.0;
@@ -68,8 +73,9 @@
 }
 .net_gobrechts_d3_force line.highlighted,
 .net_gobrechts_d3_force path.highlighted {
-    stroke: #555 !important;
-    stroke-opacity: 1.0;
+    /*stroke: #555 !important;*/
+    stroke: #18a0fb !important;
+	stroke-opacity: 1.0;
 }
 .net_gobrechts_d3_force marker.normal {
     stroke: none;
@@ -77,7 +83,8 @@
 }
 .net_gobrechts_d3_force marker.highlighted {
     stroke: none;
-    fill: #555;
+    /*fill: #555;*/
+	fill: #18a0fb;
 }
 .net_gobrechts_d3_force .graphOverlay,
 .net_gobrechts_d3_force .graphOverlaySizeHelper {
