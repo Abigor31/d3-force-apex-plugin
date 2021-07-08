@@ -898,6 +898,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 													"L" + n.x + "," + (n.y + n.radius-2)	
 											}
 						  );	
+		  
 					
                 if ( (new Date().getTime() - v.status.forceStartTime) > v.conf.forceTimeLimit){
                     v.main.force.stop();
@@ -3561,9 +3562,11 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
             .data(v.data.nodes,
                 function(n) {
                     return n.ID;
-                })
+                });
+			v.main.contur	
 			.enter()
 			.append("path")
+			.attr("class", "note")
 			.attr("d", function(n) { return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
 											"L" + (n.x+60) + "," + (n.y - n.radius+2)+" " + 
 											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+65)+","+(n.y - n.radius+7) + " " +
@@ -3576,7 +3579,8 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                 return v.tools.color(n.COLORVALUE);
             })
 			.style("fill", "none")
-			.style("stroke-width", 1);			
+			.style("stroke-width", 1);
+			
 //Добавим тег foreignObject в соответствии с количеством узлов и присвоим класс =description + ID узла, 
 //для связки текста с конкретным узлом
 //Для вставки html используем foreignObject 			
