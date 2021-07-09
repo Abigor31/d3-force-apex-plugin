@@ -898,11 +898,11 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					.attr("d", function(n) {  
 												var contur = 0;
 												return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-														"L" + (n.x+60) + "," + (n.y - n.radius+2)+" " + 
-														"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+65)+","+(n.y - n.radius+7) + " " +
-														"L" + (n.x+65) + "," + (n.y + n.radius-7) +
-														"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+60)+","+(n.y + n.radius-2) + " " +
-														"L" + n.x + "," + (n.y + n.radius-2)	
+														"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
+														"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
+														"L" + (n.x+n.radius*4+5) + "," + (n.y + n.radius-7) +
+														"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4)+","+(n.y + n.radius-2) + " " +
+														"L" + n.x + "," + (n.y + n.radius-2)
 											}
 						  );	
 		  
@@ -3551,10 +3551,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                     
 											}
 											return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-											"L" + (n.x+60) + "," + (n.y - n.radius+2)+" " + 
-											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+65)+","+(n.y - n.radius+7) + " " +
-											"L" + (n.x+65) + "," + (n.y + n.radius-7) +
-											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+60)+","+(n.y + n.radius-2) + " " +
+											"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
+											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
+											"L" + (n.x+n.radius*4+5) + "," + (n.y + n.radius-7) +
+											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4)+","+(n.y + n.radius-2) + " " +
 											"L" + n.x + "," + (n.y + n.radius-2)
 									}
 				)
@@ -3627,10 +3627,12 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					return ynote;
 					})
             .style({ "color": function(n) {return v.tools.color(n.COLORDESCR)},
-					 "overflow": "hidden"
+					 "overflow": "hidden",
+					 "text-align": "center",
+					 "font-size": "small"
 				  })
 			.attr({
-                            'width': 60,
+                            'width': function(n) {return (n.radius*3+2)},
                             'height': function(n) {return (n.radius*2-4)}
                         });
 			v.main.descriptions.exit().remove();
@@ -3645,7 +3647,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 				.attr("class", function(n){ return "descrip"+item.ID })
 				.style( {
 						"margin": 0,
-						"font-size": 7+"px",
+						//"font-size": 10+"px",
 						"float": function(n){
 							if (item.NOTE_TYPE == 2){
 								if (check % 2 == 0){check = check + 1; return "right"}else{check = check + 1; return "left"}}
