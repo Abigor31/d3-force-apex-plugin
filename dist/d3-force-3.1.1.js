@@ -3626,9 +3626,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
 					return ynote;
 					})
-            .style("color", function(n) {
-                return (v.tools.color(n.COLORDESCR));
-            })
+            .style({ "color": function(n) {return v.tools.color(n.COLORDESCR)},
+					 "overflow": "hidden"
+				  })
 			.attr({
                             'width': 60,
                             'height': function(n) {return (n.radius*2-4)}
