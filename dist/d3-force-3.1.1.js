@@ -883,19 +883,27 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 //Привязка описания к ноду во время перетаскивания узла	
 				v.main.descriptions
                     .attr("x", function(n) {
-                        return n.x+n.radius+2;
+                        var xnote = 0;           
+						if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
+						return xnote;
                     })
                     .attr("y", function(n) {
-                        return n.y - n.radius+2;;
+                        var ynote = 0;       
+						if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
+						return ynote;
                     });	
 //Привязка рамки к ноду во время перетаскивания узла
 				v.main.contur 
-					.attr("d", function(n) {  return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-													"L" + (n.x+60) + "," + (n.y - n.radius+2)+" " + 
-													"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+65)+","+(n.y - n.radius+7) + " " +
-													"L" + (n.x+65) + "," + (n.y + n.radius-7) +
-													"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+60)+","+(n.y + n.radius-2) + " " +
-													"L" + n.x + "," + (n.y + n.radius-2)	
+					.attr("d", function(n) {  
+												var contur = 0;
+												if(n.NOTE_TYPE == 1){
+												return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
+														"L" + (n.x+60) + "," + (n.y - n.radius+2)+" " + 
+														"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+65)+","+(n.y - n.radius+7) + " " +
+														"L" + (n.x+65) + "," + (n.y + n.radius-7) +
+														"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+60)+","+(n.y + n.radius-2) + " " +
+														"L" + n.x + "," + (n.y + n.radius-2)	
+												};
 											}
 						  );	
 		  
@@ -3567,12 +3575,16 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			.enter()
 			.append("path")
 			.attr("class", "note")
-			.attr("d", function(n) { return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
+			.attr("d", function(n) { var contur = 0;
+									 if(n.NOTE_TYPE == 1)
+										{
+											return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
 											"L" + (n.x+60) + "," + (n.y - n.radius+2)+" " + 
 											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+65)+","+(n.y - n.radius+7) + " " +
 											"L" + (n.x+65) + "," + (n.y + n.radius-7) +
 											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+60)+","+(n.y + n.radius-2) + " " +
-											"L" + n.x + "," + (n.y + n.radius-2)	 
+											"L" + n.x + "," + (n.y + n.radius-2)
+										}
 									}
 				)
 			.style( "stroke", function(n) {
@@ -3595,12 +3607,16 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			.attr("class", function(n) {
                     return "description"+n.ID;
                 })
-            .attr("x", function(n) {              
-					return (n.x+n.radius+2);
+            .attr("x", function(n) {   
+					 var xnote = 0;           
+					 if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
+					 return xnote;
 					})
 			  
-            .attr("y", function(n) {         
-					return (n.y - n.radius+2);
+            .attr("y", function(n) { 
+					var ynote = 0;       
+					if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
+					return ynote;
 					})
             .style("color", function(n) {
                 return (v.tools.color(n.COLORDESCR));
@@ -3611,17 +3627,23 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                         });
 			v.main.descriptions.exit().remove();
 //Для каждого узла для тега foreignObject присвоим ему параметры в p 
-//То есть ищем все foreignObject c классом 	= description + ID узла и добавляем туда p = количество параметров			
+//То есть ищем все foreignObject c классом 	= description + ID узла и добавляем туда p = количество параметров
+			var check = 1;
 			v.data.nodes.forEach(function(item, counter){
 				v.main.tdescr = v.main.descriptions.filter(".description"+item.ID).selectAll("p").filter(".descrip"+item.ID)
-				.data(item.PARAM, function(n){ return n.par })
+				.data(item.PARAM_SETTINGS.PARAM, function(n, i){ return n.par+i })
 				.enter()
 				.append("xhtml:p")
 				.attr("class", function(n){ return "descrip"+item.ID })
-				.style({
+				.style( {
 						"margin": 0,
-						"font-size": 7+"px"
-					  })
+						"font-size": 7+"px",
+						"float": function(n){
+							if (item.NOTE_TYPE == 2){
+								if (check % 2 == 0){check = check + 1; return "right"}else{check = check + 1; return "left"}}
+							}
+				})
+				.style("color", function(n, i){return item.PARAM_SETTINGS.COLORS[i].color})	 
 	    		.html (function (n) { return n.par})
 			});   
 
