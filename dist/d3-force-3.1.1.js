@@ -3641,7 +3641,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			var check = 1;
 			v.data.nodes.forEach(function(item, counter){
 				v.main.tdescr = v.main.descriptions.filter(".description"+item.ID).selectAll("p").filter(".descrip"+item.ID)
-				.data(item.PARAM_SETTINGS.PARAM, function(n, i){ return n.par+i })
+				.data(item.PARAM_SETTINGS, function(n, i){ return n.par+i })
 				.enter()
 				.append("xhtml:p")
 				.attr("class", function(n){ return "descrip"+item.ID })
@@ -3653,7 +3653,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 								if (check % 2 == 0){check = check + 1; return "right"}else{check = check + 1; return "left"}}
 							}
 				})
-				.style("color", function(n, i){return item.PARAM_SETTINGS.COLORS[i].color})	 
+				.style("color", function(n, i){return n.color})	 
 	    		.html (function (n) {var str = n.par;
 									 if ((n.par.length)< 7)
 									 {
