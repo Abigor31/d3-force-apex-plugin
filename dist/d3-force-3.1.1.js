@@ -3632,7 +3632,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					 "font-size": "small"
 				  })
 			.attr({
-                            'width': function(n) {return (n.radius*3+2)},
+                            'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*3+2)}else{return n.radius*3.5}},
                             'height': function(n) {return (n.radius*2-4)}
                         });
 			v.main.descriptions.exit().remove();
@@ -3654,7 +3654,17 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 							}
 				})
 				.style("color", function(n, i){return item.PARAM_SETTINGS.COLORS[i].color})	 
-	    		.html (function (n) { return n.par})
+	    		.html (function (n) {var str = n.par;
+									 if ((n.par.length)< 7)
+									 {
+										for(var t=n.par.length; t<7; t++)
+										{
+											str = str + "&nbsp;";
+										}
+										
+									 } 
+									 return str;
+									 })
 			});   
 
         // LABELS
