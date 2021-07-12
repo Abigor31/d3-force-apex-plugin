@@ -898,10 +898,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					.attr("d", function(n) {  
 												var contur = 0;
 												return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-														"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
-														"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
-														"L" + (n.x+n.radius*4+5) + "," + (n.y + n.radius-7) +
-														"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4)+","+(n.y + n.radius-2) + " " +
+														"L" + (n.x+n.radius*3) + "," + (n.y - n.radius+2)+" " + 
+														"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3+5)+","+(n.y - n.radius+7) + " " +
+														"L" + (n.x+n.radius*3+5) + "," + (n.y + n.radius-7) +
+														"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3)+","+(n.y + n.radius-2) + " " +
 														"L" + n.x + "," + (n.y + n.radius-2)
 											}
 						  );	
@@ -1645,8 +1645,11 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
         });
 		//Выделение показателей
 		//для случая с foreignObject - XHTML
+		//и выделение рамки
 		v.main.descriptions.filter(".description"+node.ID).style("font-weight", "bold");
-
+		//v.main.contur.filter(function(n) {return n.NOTE_TYPE == 1}).classed("note_highlight", true);
+		
+		
         v.main.links
             .classed("highlighted", function(l) {
                 return l.source.ID === node.ID || l.target.ID === node.ID;
@@ -1692,7 +1695,11 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
     v.tools.onNodeMouseleave = function(node) {
         v.main.nodes.classed("highlighted", false);
 		//для случая с foreignObject - XHTML
+		//Снятие выделения с показателей и с рамки типа узла 1
 		v.main.descriptions.filter(".description"+node.ID).style("font-weight", "normal");
+		//v.main.contur.filter(function(n) {return n.NOTE_TYPE == 1}).classed("note_highlight", false);
+		
+			
         v.main.links
             .classed("highlighted", false)
             .style("marker-end", v.tools.getMarkerUrl);
@@ -3551,10 +3558,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                     
 											}
 											return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-											"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
-											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
-											"L" + (n.x+n.radius*4+5) + "," + (n.y + n.radius-7) +
-											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4)+","+(n.y + n.radius-2) + " " +
+											"L" + (n.x+n.radius*3) + "," + (n.y - n.radius+2)+" " + 
+											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3+5)+","+(n.y - n.radius+7) + " " +
+											"L" + (n.x+n.radius*3+5) + "," + (n.y + n.radius-7) +
+											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3)+","+(n.y + n.radius-2) + " " +
 											"L" + n.x + "," + (n.y + n.radius-2)
 									}
 				)
@@ -3562,7 +3569,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                 return v.tools.color(n.COLORVALUE);
             })
 			.style("fill", function(n) {return n.COLORFILL ? n.COLORFILL : "none" })
-			.style("stroke-width", 1);
+			.style("stroke-width", 2);
 			v.main.contur.exit().remove();
 
         // NODES
@@ -3632,14 +3639,15 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					 "font-size": "small"
 				  })
 			.attr({
-                            'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*3+2)}else{return n.radius*3.5}},
-                            'height': function(n) {return (n.radius*2-4)}
+                            'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*2+2)}else{return n.radius*3.5}},
+                            'height': function(n) {if(n.radius>4){return (n.radius*2-4)}else{return n.radius*2}}
                         });
 			v.main.descriptions.exit().remove();
 //Для каждого узла для тега foreignObject присвоим ему параметры в p 
 //То есть ищем все foreignObject c классом 	= description + ID узла и добавляем туда p = количество параметров
-			var check = 1;
+
 			v.data.nodes.forEach(function(item, counter){
+				var check=1;
 				v.main.tdescr = v.main.descriptions.filter(".description"+item.ID).selectAll("p").filter(".descrip"+item.ID)
 				.data(item.PARAM_SETTINGS, function(n, i){ return n.par+i })
 				.enter()
