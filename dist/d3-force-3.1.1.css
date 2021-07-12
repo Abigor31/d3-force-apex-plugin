@@ -21,6 +21,12 @@
 	stroke-width: 2px;
     stroke-opacity: 1.0;
 }
+
+/*.note_highlight {
+    stroke: #18a0fb !important;
+    stroke-width: 2 !important;
+}*/
+
 .net_gobrechts_d3_force circle.selected {
     /*stroke: #555;*/
 	stroke: #18a0fb;
