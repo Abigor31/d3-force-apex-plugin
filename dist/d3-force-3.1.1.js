@@ -881,31 +881,32 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					
 					
 //Привязка описания к ноду во время перетаскивания узла	
-				v.main.descriptions
-                    .attr("x", function(n) {
-                        var xnote = 0;           
-						if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
-						return xnote;
-                    })
-                    .attr("y", function(n) {
-                        var ynote = 0;       
-						if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
-						return ynote;
-                    });	
-//Привязка рамки к ноду во время перетаскивания узла
-				v.main.contur 
-					.filter(function(d) {return d.NOTE_TYPE == 1})
-					.attr("d", function(n) {  
-												var contur = 0;
-												return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-														"L" + (n.x+n.radius*3) + "," + (n.y - n.radius+2)+" " + 
-														"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3+5)+","+(n.y - n.radius+7) + " " +
-														"L" + (n.x+n.radius*3+5) + "," + (n.y + n.radius-7) +
-														"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3)+","+(n.y + n.radius-2) + " " +
-														"L" + n.x + "," + (n.y + n.radius-2)
-											}
-						  );	
-		  
+					v.main.descriptions
+						.filter(function(n) {return typeof(n.PARAM_SETTINGS) == "object"})
+						.attr("x", function(n) {
+							var xnote = 0;           
+							if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
+							return xnote;
+						})
+						.attr("y", function(n) {
+							var ynote = 0;       
+							if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
+							return ynote;
+						});
+					
+	//Привязка рамки к ноду во время перетаскивания узла
+					v.main.contur 
+						.filter(function(n) {return n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS) == "object"})
+						.attr("d", function(n) {  
+													var contur = 0;
+													return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
+															"L" + (n.x+n.radius*3) + "," + (n.y - n.radius+2)+" " + 
+															"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3+5)+","+(n.y - n.radius+7) + " " +
+															"L" + (n.x+n.radius*3+5) + "," + (n.y + n.radius-7) +
+															"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3)+","+(n.y + n.radius-2) + " " +
+															"L" + n.x + "," + (n.y + n.radius-2)
+												}
+							  );	
 					
                 if ( (new Date().getTime() - v.status.forceStartTime) > v.conf.forceTimeLimit){
                     v.main.force.stop();
@@ -1646,8 +1647,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 		//Выделение показателей
 		//для случая с foreignObject - XHTML
 		//и выделение рамки
-		v.main.descriptions.filter(".description"+node.ID).style("font-weight", "bold");
-		//v.main.contur.filter(function(n) {return n.NOTE_TYPE == 1}).classed("note_highlight", true);
+		if(typeof(node.PARAM_SETTINGS)=="object"){
+			v.main.descriptions.filter(".description"+node.ID).style("font-weight", "bold");
+			//v.main.contur.filter(function(n) {return n.NOTE_TYPE == 1}).classed("note_highlight", true);
+		};
 		
 		
         v.main.links
@@ -1696,8 +1699,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
         v.main.nodes.classed("highlighted", false);
 		//для случая с foreignObject - XHTML
 		//Снятие выделения с показателей и с рамки типа узла 1
-		v.main.descriptions.filter(".description"+node.ID).style("font-weight", "normal");
+		if(typeof(node.PARAM_SETTINGS)=="object"){
+			v.main.descriptions.filter(".description"+node.ID).style("font-weight", "normal");
 		//v.main.contur.filter(function(n) {return n.NOTE_TYPE == 1}).classed("note_highlight", false);
+		};
 		
 			
         v.main.links
@@ -3536,10 +3541,11 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                 });
         });
 //Контурная рамка для показателя
+
 			
 			 v.main.contur = v.dom.graph.selectAll("path.note")
             .data(v.data.nodes,
-                function(n) {if(n.NOTE_TYPE == 1)
+                function(n) {if(n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS)=="object")
 								{ 
 									return n.ID;
 								}
@@ -3547,7 +3553,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			v.main.contur	
 			.enter()
 			.append("path")
-			.filter(function(n) {return n.NOTE_TYPE == 1})
+			.filter(function(n) {return n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS)=="object"})
 			.attr("class", "note")
 			.attr("d", function(n) { var contur = 0;
 											if (!n.fixed && !n.x) {
@@ -3571,7 +3577,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			.style("fill", function(n) {return n.COLORFILL ? n.COLORFILL : "none" })
 			.style("stroke-width", 2);
 			v.main.contur.exit().remove();
-
+			
         // NODES
         v.main.nodes = v.dom.graph.selectAll("circle.node")
             .data(v.data.nodes,
@@ -3610,71 +3616,81 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			
 //Добавим тег foreignObject в соответствии с количеством узлов и присвоим класс =description + ID узла, 
 //для связки текста с конкретным узлом
-//Для вставки html используем foreignObject 			
-			v.main.descriptions = v.dom.graph.selectAll("foreignObject")
-            .data(v.data.nodes,
-                function(n) {
-                    return n.ID;
-                });
-			v.main.descriptions
-			.enter()
-			.append("foreignObject")
-			.attr("class", function(n) {
-                    return "description"+n.ID;
-                })
-            .attr("x", function(n) {   
-					 var xnote = 0;           
-					 if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
-					 return xnote;
-					})
-			  
-            .attr("y", function(n) { 
-					var ynote = 0;       
-					if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
-					return ynote;
-					})
-            .style({ "color": function(n) {return v.tools.color(n.COLORDESCR)},
-					 "overflow": "hidden",
-					 "text-align": "center",
-					 "font-size": "small"
-				  })
-			.attr({
-                            'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*2+2)}else{return n.radius*3.5}},
-                            'height': function(n) {if(n.radius>4){return (n.radius*2-4)}else{return n.radius*2}}
-                        });
-			v.main.descriptions.exit().remove();
-//Для каждого узла для тега foreignObject присвоим ему параметры в p 
-//То есть ищем все foreignObject c классом 	= description + ID узла и добавляем туда p = количество параметров
+//Для вставки html используем foreignObject 	
+	
 
-			v.data.nodes.forEach(function(item, counter){
-				var check=1;
-				v.main.tdescr = v.main.descriptions.filter(".description"+item.ID).selectAll("p").filter(".descrip"+item.ID)
-				.data(item.PARAM_SETTINGS, function(n, i){ return n.par+i })
+			
+				v.main.descriptions = v.dom.graph.selectAll("foreignObject")
+				.data(v.data.nodes,
+					function(n) { if(typeof(n.PARAM_SETTINGS)=="object")
+									{
+										return n.ID;
+									}
+					});
+				v.main.descriptions
 				.enter()
-				.append("xhtml:p")
-				.attr("class", function(n){ return "descrip"+item.ID })
-				.style( {
-						"margin": 0,
-						//"font-size": 10+"px",
-						"float": function(n){
-							if (item.NOTE_TYPE == 2){
-								if (check % 2 == 0){check = check + 1; return "right"}else{check = check + 1; return "left"}}
-							}
-				})
-				.style("color", function(n, i){return n.color})	 
-	    		.html (function (n) {var str = n.par;
-									 if ((n.par.length)< 7)
-									 {
-										for(var t=n.par.length; t<7; t++)
-										{
-											str = str + "&nbsp;";
-										}
-										
-									 } 
-									 return str;
-									 })
-			});   
+				.append("foreignObject")
+				.filter(function(n) {return typeof(n.PARAM_SETTINGS)=="object"})
+				.attr("class", function(n) {
+						return "description"+n.ID;
+					})
+				.attr("x", function(n) {   
+						 var xnote = 0;           
+						 if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
+						 return xnote;
+						})
+				  
+				.attr("y", function(n) { 
+						var ynote = 0;       
+						if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
+						return ynote;
+						})
+				.style({ "color": function(n) {return v.tools.color(n.COLORDESCR)},
+						 "overflow": "hidden",
+						 "text-align": "center",
+						 "font-size": "small"
+					  })
+				.attr({
+								'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*2+2)}else{return n.radius*3.5}},
+								'height': function(n) {if(n.radius>4){return (n.radius*2-4)}else{return n.radius*2}}
+							});
+				v.main.descriptions.exit().remove();
+	//Для каждого узла для тега foreignObject присвоим ему параметры в p 
+	//То есть ищем все foreignObject c классом 	= description + ID узла и добавляем туда p = количество параметров
 
+				v.data.nodes.forEach(function(item, counter){
+					if(typeof(item.PARAM_SETTINGS)=="object"){
+						var check=1;
+						v.main.tdescr = v.main.descriptions.filter(".description"+item.ID).selectAll("p").filter(".descrip"+item.ID)
+						.data(item.PARAM_SETTINGS, function(n, i){ return n.par+i })
+						.enter()
+						.append("xhtml:p")
+						.attr("class", function(n){ return "descrip"+item.ID })
+						.style( {
+								"margin": 0,
+								//"font-size": 10+"px",
+								"float": function(n){
+									if (item.NOTE_TYPE == 2){
+										if (check % 2 == 0){check = check + 1; return "right"}else{check = check + 1; return "left"}}
+									}
+						})
+						.style("color", function(n, i){return n.color})	 
+						.html (function (n) {
+											 var str = n.par;
+											 if ((n.par.length)< 7)
+											 {
+												for(var t=n.par.length; t<7; t++)
+												{
+													str = str + "&nbsp;";
+												}
+												
+											 } 
+											 return str;
+											 })	
+					};						 
+				});   
+
+			
         // LABELS
 
         if (v.conf.showLabels) {
