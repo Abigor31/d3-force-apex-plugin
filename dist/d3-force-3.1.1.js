@@ -1728,7 +1728,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 		//для случая с foreignObject - XHTML
 		//и выделение рамки
 		if(typeof(node.PARAM_SETTINGS)=="object"){
-			v.main.descriptions.filter(".description"+node.ID).style("font-weight", "bold");
+			v.main.descriptions.selectAll("div").filter(".description"+node.ID).style("font-weight", "bold");
 			//v.main.contur.filter(function(n) {return n.NOTE_TYPE == 1}).classed("note_highlight", true);
 		};
 		
@@ -1780,7 +1780,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 		//для случая с foreignObject - XHTML
 		//Снятие выделения с показателей и с рамки типа узла 1
 		if(typeof(node.PARAM_SETTINGS)=="object"){
-			v.main.descriptions.filter(".description"+node.ID).style("font-weight", "normal");
+			v.main.descriptions.selectAll("div").filter(".description"+node.ID).style("font-weight", "normal");
 		//v.main.contur.filter(function(n) {return n.NOTE_TYPE == 1}).classed("note_highlight", false);
 		};
 		
