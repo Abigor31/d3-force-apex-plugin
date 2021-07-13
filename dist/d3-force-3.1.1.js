@@ -3729,8 +3729,16 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						 "display": "table"
 					  })
 				.attr({
-								'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*2+2)}else{return n.radius*3.5}},
-								'height': function(n) {if(n.radius>4){return (n.radius*2-4)}else{return n.radius*2}}
+								'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*2+2)}
+														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*3.5}
+														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*5}
+													 },
+								'height': function(n) {
+														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
+														else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2+"px"}
+														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius}
+														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*2}
+													}
 							})
 				.append("xhtml:div")
 				.attr("class", function(n) {
@@ -3738,9 +3746,16 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					})
 				.style({     "display": "table-cell",
 							 "vertical-align": "middle",
-							 'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*2+2+"px")}else{return n.radius*3.5+"px"}},
-							 'height': function(n) {if(n.radius>4){return (n.radius*2-4+"px")}else{return n.radius*2+"px"}}
-							
+							 'width': function(n) { 	if (n.NOTE_TYPE == 1){return (n.radius*2+2+"px")}
+														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*3.5+"px"}
+														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*5+"px"}
+												  },
+							 'height': function(n) {
+														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
+														else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2+"px"}
+														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius+"px"}
+														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*2+"px"}
+													}
 				});
 				v.main.descriptions.exit().remove();
 	//Для каждого узла для тега foreignObject присвоим ему параметры в p 
