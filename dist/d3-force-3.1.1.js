@@ -3711,9 +3711,6 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 				.enter()
 				.append("foreignObject")
 				.filter(function(n) {return typeof(n.PARAM_SETTINGS)=="object"})
-				.attr("class", function(n) {
-						return "description"+n.ID;
-					})
 				.attr("x", function(n) {   
 						 var xnote = 0;           
 						 if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
@@ -3728,12 +3725,23 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 				.style({ "color": function(n) {return v.tools.color(n.COLORDESCR)},
 						 "overflow": "hidden",
 						 "text-align": "center",
-						 "font-size": "small"
+						 "font-size": "small",
+						 "display": "table"
 					  })
 				.attr({
 								'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*2+2)}else{return n.radius*3.5}},
 								'height': function(n) {if(n.radius>4){return (n.radius*2-4)}else{return n.radius*2}}
-							});
+							})
+				.append("xhtml:div")
+				.attr("class", function(n) {
+						return "description"+n.ID;
+					})
+				.style({     "display": "table-cell",
+							 "vertical-align": "middle",
+							 'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*2+2+"px")}else{return n.radius*3.5+"px"}},
+							 'height': function(n) {if(n.radius>4){return (n.radius*2-4+"px")}else{return n.radius*2+"px"}}
+							
+				});
 				v.main.descriptions.exit().remove();
 	//Для каждого узла для тега foreignObject присвоим ему параметры в p 
 	//То есть ищем все foreignObject c классом 	= description + ID узла и добавляем туда p = количество параметров
@@ -3741,14 +3749,13 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 				v.data.nodes.forEach(function(item, counter){
 					if(typeof(item.PARAM_SETTINGS)=="object"){
 						var check=1;
-						v.main.tdescr = v.main.descriptions.filter(".description"+item.ID).selectAll("p").filter(".descrip"+item.ID)
+						v.main.tdescr = v.main.descriptions.selectAll("div").filter(".description"+item.ID).selectAll("p").filter(".descrip"+item.ID)
 						.data(item.PARAM_SETTINGS, function(n, i){ return n.par+i })
 						.enter()
 						.append("xhtml:p")
 						.attr("class", function(n){ return "descrip"+item.ID })
 						.style( {
 								"margin": 0,
-								//"font-size": 10+"px",
 								"float": function(n){
 									if (item.NOTE_TYPE == 2){
 										if (check % 2 == 0){check = check + 1; return "right"}else{check = check + 1; return "left"}}
@@ -3770,7 +3777,6 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					};						 
 				});   
 
-			
         // LABELS
 
         if (v.conf.showLabels) {
