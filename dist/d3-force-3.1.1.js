@@ -1362,7 +1362,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
             if ((l.source.y == l.target.y) && (l.source.x > l.target.x)) {
                 pathSq = "M"+l.source.x+","+l.source.y+" L"+(l.target.x + l.target.radius)+","+l.target.y;
             }
-            return pathSq; //output ready line without
+            return pathSq; //output ready line without case check
         }
         
         switch (l.LINE_TYPES) {
@@ -1439,7 +1439,42 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                 break;
 
             case 4: //two corners Z-like 2 sides left-right start point
-            
+                if ((l.source.x < l.target.x) && (l.source.y > l.target.y)) {
+                    pathSq = "M"+(l.source.x + l.source.radius)+" "+l.source.y;
+                    pathSq += " L"+((l.source.x + ((l.target.x - l.source.x)/2))-v.conf.lineCornerSmooth)+","+l.source.y;
+                    pathSq += " Q"+(l.source.x + ((l.target.x - l.source.x)/2))+","+l.source.y+","+(l.source.x + ((l.target.x - l.source.x)/2))+","+(l.source.y - v.conf.lineCornerSmooth);
+                    pathSq += " L"+(l.source.x + ((l.target.x - l.source.x)/2))+","+(l.target.y + v.conf.lineCornerSmooth);
+                    pathSq += " Q"+(l.source.x + ((l.target.x - l.source.x)/2))+","+l.target.y+","+((l.source.x + ((l.target.x - l.source.x)/2))+v.conf.lineCornerSmooth)+","+l.target.y;
+                    pathSq += " L"+(l.target.x - l.target.radius)+","+l.target.y;   
+                }
+                
+                if ((l.source.x < l.target.x) && (l.source.y < l.target.y)) {
+                    pathSq = "M"+(l.source.x + l.source.radius)+" "+l.source.y;
+                    pathSq += " L"+((l.source.x + ((l.target.x - l.source.x)/2))-v.conf.lineCornerSmooth)+","+l.source.y;
+                    pathSq += " Q"+(l.source.x + ((l.target.x - l.source.x)/2))+","+l.source.y+","+(l.source.x + ((l.target.x - l.source.x)/2))+","+(l.source.y + v.conf.lineCornerSmooth);
+                    pathSq += " L"+(l.source.x + ((l.target.x - l.source.x)/2))+","+(l.target.y - v.conf.lineCornerSmooth);
+                    pathSq += " Q"+(l.source.x + ((l.target.x - l.source.x)/2))+","+l.target.y+","+((l.source.x + ((l.target.x - l.source.x)/2))+v.conf.lineCornerSmooth)+","+l.target.y;
+                    pathSq += " L"+(l.target.x - l.target.radius)+","+l.target.y; 
+                }
+
+                if ((l.source.x > l.target.x) && (l.source.y > l.target.y)) {
+                    pathSq = "M"+(l.source.x - l.source.radius)+" "+l.source.y;
+                    pathSq += " L"+((l.source.x - ((l.source.x - l.target.x)/2))+v.conf.lineCornerSmooth)+","+l.source.y;
+                    pathSq += " Q"+(l.source.x - ((l.source.x - l.target.x)/2))+","+l.source.y+","+(l.source.x - ((l.source.x - l.target.x)/2))+","+(l.source.y - v.conf.lineCornerSmooth);
+                    pathSq += " L"+(l.source.x - ((l.source.x - l.target.x)/2))+","+(l.target.y + v.conf.lineCornerSmooth);
+                    pathSq += " Q"+(l.source.x - ((l.source.x - l.target.x)/2))+","+l.target.y+","+((l.source.x - ((l.source.x - l.target.x)/2))-v.conf.lineCornerSmooth)+","+l.target.y;
+                    pathSq += " L"+(l.target.x + l.target.radius)+","+l.target.y; 
+                }
+
+                if ((l.source.x > l.target.x) && (l.source.y < l.target.y)) {
+                    pathSq = "M"+(l.source.x - l.source.radius)+" "+l.source.y;
+                    pathSq += " L"+((l.source.x - ((l.source.x - l.target.x)/2))+v.conf.lineCornerSmooth)+","+l.source.y;
+                    pathSq += " Q"+(l.source.x - ((l.source.x - l.target.x)/2))+","+l.source.y+","+(l.source.x - ((l.source.x - l.target.x)/2))+","+(l.source.y + v.conf.lineCornerSmooth);
+                    pathSq += " L"+(l.source.x - ((l.source.x - l.target.x)/2))+","+(l.target.y - v.conf.lineCornerSmooth);
+                    pathSq += " Q"+(l.source.x - ((l.source.x - l.target.x)/2))+","+l.target.y+","+((l.source.x - ((l.source.x - l.target.x)/2))-v.conf.lineCornerSmooth)+","+l.target.y;
+                    pathSq += " L"+(l.target.x + l.target.radius)+","+l.target.y; 
+                }
+                
                 break;
         
             default: //one corner 2 sides top-bottom start point
