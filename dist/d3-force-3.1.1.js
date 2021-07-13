@@ -1338,10 +1338,17 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
     };
     
     // create a path for squared links
+    //Alekhin: 
+    //Main property of each line is 'LINE_TYPES'
+    //1 or null : one corner 2 sides top-bottom start point
+    //2         : one corner 2 sides left-right start point
+    //3         : two corners Z-like 2 sides top-bottom start point
+    //4         : two corners Z-like 2 sides left-right start point
     v.tools.adjustSquaredLinesPath = function(l) {
 
         var pathSq = "";
         
+        //straight direct line p2p
         if ((l.source.x == l.target.x) || (l.source.y == l.target.y)) {
             if ((l.source.x == l.target.x) && (l.source.y < l.target.y)) {
                 pathSq = "M"+l.source.x+","+l.source.y+" L"+l.target.x+","+(l.target.y - l.target.radius);
@@ -1355,85 +1362,123 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
             if ((l.source.y == l.target.y) && (l.source.x > l.target.x)) {
                 pathSq = "M"+l.source.x+","+l.source.y+" L"+(l.target.x + l.target.radius)+","+l.target.y;
             }
-            //console.log("We are here: EQUAL");
+            return pathSq; //output ready line without
+        }
+        
+        switch (l.LINE_TYPES) {
+            case 2: //one corner line with only left-right sides start point
+                if ((l.source.x < l.target.x) && (l.source.y > l.target.y)) {
+                    pathSq = "M"+l.source.x+" "+l.source.y;
+                    pathSq += " L"+(l.target.x-v.conf.lineCornerSmooth)+","+l.source.y;
+                    pathSq += " Q"+l.target.x+","+l.source.y+","+l.target.x+","+(l.source.y-v.conf.lineCornerSmooth);
+                    pathSq += " L"+l.target.x+","+(l.target.y + l.target.radius);
+                    
+                }
+
+                if ((l.source.x < l.target.x) && (l.source.y < l.target.y)) {
+                    pathSq = "M"+l.source.x+","+l.source.y;
+                    pathSq += " L"+(l.target.x-v.conf.lineCornerSmooth)+","+l.source.y;
+                    pathSq += " Q"+l.target.x+","+l.source.y+","+l.target.x+","+(l.source.y+v.conf.lineCornerSmooth);
+                    pathSq += " L"+l.target.x+","+(l.target.y - l.target.radius);
+                    
+                }
+
+                if ((l.source.x > l.target.x) && (l.source.y > l.target.y)) {
+                    pathSq = "M"+l.source.x+","+l.source.y;
+                    pathSq += " L"+(l.target.x+v.conf.lineCornerSmooth)+","+l.source.y;
+                    pathSq += " Q"+l.target.x+","+l.source.y+","+l.target.x+","+(l.source.y-v.conf.lineCornerSmooth);
+                    pathSq += " L"+l.target.x+","+(l.target.y + l.target.radius);
+                    
+                }
+
+                if ((l.source.x > l.target.x) && (l.source.y < l.target.y)) {
+                    pathSq = "M"+l.source.x+","+l.source.y;
+                    pathSq += " L"+(l.target.x+v.conf.lineCornerSmooth)+","+l.source.y;
+                    pathSq += " Q"+l.target.x+","+l.source.y+","+l.target.x+","+(l.source.y+v.conf.lineCornerSmooth);
+                    pathSq += " L"+l.target.x+","+(l.target.y - l.target.radius);
+                    
+                }
+                break;
+
+            case 3: //two corners Z-like 2 sides top-bottom start point
+                if ((l.source.x < l.target.x) && (l.source.y > l.target.y)) {
+                    pathSq = "M"+l.source.x+" "+(l.source.y - l.source.radius);
+                    pathSq += " L"+l.source.x+","+((l.source.y - ((l.source.y - l.target.y)/2))+v.conf.lineCornerSmooth);
+                    pathSq += " Q"+l.source.x+","+(l.source.y - ((l.source.y - l.target.y)/2))+","+(l.source.x+v.conf.lineCornerSmooth)+","+(l.source.y - ((l.source.y - l.target.y)/2));
+                    pathSq += " L"+(l.target.x - v.conf.lineCornerSmooth)+","+(l.source.y - ((l.source.y - l.target.y)/2));
+                    pathSq += " Q"+l.target.x+","+(l.source.y - ((l.source.y - l.target.y)/2))+","+l.target.x+","+((l.source.y - ((l.source.y - l.target.y)/2))-v.conf.lineCornerSmooth);
+                    pathSq += " L"+(l.target.x)+","+(l.target.y + l.target.radius);
+                }
+
+                if ((l.source.x < l.target.x) && (l.source.y < l.target.y)) {
+                    pathSq = "M"+l.source.x+" "+(l.source.y + l.source.radius);
+                    pathSq += " L"+l.source.x+","+((l.source.y + (( l.target.y - l.source.y)/2))-v.conf.lineCornerSmooth);
+                    pathSq += " Q"+l.source.x+","+(l.source.y + (( l.target.y - l.source.y)/2))+","+(l.source.x+v.conf.lineCornerSmooth)+","+(l.source.y + (( l.target.y - l.source.y)/2));
+                    pathSq += " L"+(l.target.x - v.conf.lineCornerSmooth)+","+(l.source.y + (( l.target.y - l.source.y)/2));
+                    pathSq += " Q"+l.target.x+","+(l.source.y + (( l.target.y - l.source.y)/2))+","+l.target.x+","+((l.source.y + (( l.target.y - l.source.y)/2))+v.conf.lineCornerSmooth);
+                    pathSq += " L"+(l.target.x)+","+(l.target.y - l.target.radius);
+                }
+
+                if ((l.source.x > l.target.x) && (l.source.y > l.target.y)) {
+                    pathSq = "M"+l.source.x+" "+(l.source.y - l.source.radius);
+                    pathSq += " L"+l.source.x+","+((l.source.y - ((l.source.y - l.target.y)/2))+v.conf.lineCornerSmooth);
+                    pathSq += " Q"+l.source.x+","+(l.source.y - ((l.source.y - l.target.y)/2))+","+(l.source.x-v.conf.lineCornerSmooth)+","+(l.source.y - ((l.source.y - l.target.y)/2));
+                    pathSq += " L"+(l.target.x + v.conf.lineCornerSmooth)+","+(l.source.y - ((l.source.y - l.target.y)/2));
+                    pathSq += " Q"+l.target.x+","+(l.source.y - ((l.source.y - l.target.y)/2))+","+l.target.x+","+((l.source.y - ((l.source.y - l.target.y)/2))-v.conf.lineCornerSmooth);
+                    pathSq += " L"+(l.target.x)+","+(l.target.y + l.target.radius);   
+                }
+
+                if ((l.source.x > l.target.x) && (l.source.y < l.target.y)) {
+                    pathSq = "M"+l.source.x+" "+(l.source.y + l.source.radius);
+                    pathSq += " L"+l.source.x+","+((l.source.y + (( l.target.y - l.source.y)/2))-v.conf.lineCornerSmooth);
+                    pathSq += " Q"+l.source.x+","+(l.source.y + (( l.target.y - l.source.y)/2))+","+(l.source.x-v.conf.lineCornerSmooth)+","+(l.source.y + (( l.target.y - l.source.y)/2));
+                    pathSq += " L"+(l.target.x + v.conf.lineCornerSmooth)+","+(l.source.y + (( l.target.y - l.source.y)/2));
+                    pathSq += " Q"+l.target.x+","+(l.source.y + (( l.target.y - l.source.y)/2))+","+l.target.x+","+((l.source.y + (( l.target.y - l.source.y)/2))+v.conf.lineCornerSmooth);
+                    pathSq += " L"+(l.target.x)+","+(l.target.y - l.target.radius);
+                }
+                break;
+
+            case 4: //two corners Z-like 2 sides left-right start point
+            
+                break;
+        
+            default: //one corner 2 sides top-bottom start point
+                if ((l.source.x < l.target.x) && (l.source.y > l.target.y)) {
+                    pathSq = "M"+l.source.x+" "+l.source.y;
+                    pathSq += " L"+l.source.x+","+(l.target.y+v.conf.lineCornerSmooth);
+                    pathSq += " Q"+l.source.x+","+l.target.y+","+(l.source.x+v.conf.lineCornerSmooth)+","+l.target.y;
+                    pathSq += " L"+(l.target.x - l.target.radius)+","+l.target.y;
+                    
+                }
+        
+                if ((l.source.x < l.target.x) && (l.source.y < l.target.y)) {
+                    pathSq = "M"+l.source.x+","+l.source.y;
+                    pathSq += " L"+l.source.x+","+(l.target.y-v.conf.lineCornerSmooth);
+                    pathSq += " Q"+l.source.x+","+l.target.y+","+(l.source.x+v.conf.lineCornerSmooth)+","+l.target.y;
+                    pathSq += " L"+(l.target.x - l.target.radius)+","+l.target.y;
+                    
+                }
+        
+                if ((l.source.x > l.target.x) && (l.source.y > l.target.y)) {
+                    pathSq = "M"+l.source.x+","+l.source.y;
+                    pathSq += " L"+l.source.x+","+(l.target.y+v.conf.lineCornerSmooth);
+                    pathSq += " Q"+l.source.x+","+l.target.y+","+(l.source.x-v.conf.lineCornerSmooth)+","+l.target.y;
+                    pathSq += " L"+(l.target.x + l.target.radius)+","+l.target.y;
+                    
+                }
+        
+                if ((l.source.x > l.target.x) && (l.source.y < l.target.y)) {
+                    pathSq = "M"+l.source.x+","+l.source.y;
+                    pathSq += " L"+l.source.x+","+(l.target.y-v.conf.lineCornerSmooth);
+                    pathSq += " Q"+l.source.x+","+l.target.y+","+(l.source.x-v.conf.lineCornerSmooth)+","+l.target.y;
+                    pathSq += " L"+(l.target.x + l.target.radius)+","+(l.target.y);
+                    
+                }
+                break;
         }
 
-        if (l.LINE_TYPES == "2") {
-
-            if ((l.source.x < l.target.x) && (l.source.y > l.target.y)) {
-                pathSq = "M"+l.source.x+" "+l.source.y;
-                pathSq += " L"+(l.target.x-v.conf.lineCornerSmooth)+","+l.source.y;
-                pathSq += " Q"+l.target.x+","+l.source.y+","+l.target.x+","+(l.source.y-v.conf.lineCornerSmooth);
-                pathSq += " L"+l.target.x+","+(l.target.y + l.target.radius);
-                //console.log("We are here: 1");
-            }
-
-            if ((l.source.x < l.target.x) && (l.source.y < l.target.y)) {
-                pathSq = "M"+l.source.x+","+l.source.y;
-                pathSq += " L"+(l.target.x-v.conf.lineCornerSmooth)+","+l.source.y;
-                pathSq += " Q"+l.target.x+","+l.source.y+","+l.target.x+","+(l.source.y+v.conf.lineCornerSmooth);
-                pathSq += " L"+l.target.x+","+(l.target.y - l.target.radius);
-                //console.log("We are here: 2");
-            }
-
-            if ((l.source.x > l.target.x) && (l.source.y > l.target.y)) {
-                pathSq = "M"+l.source.x+","+l.source.y;
-                pathSq += " L"+(l.target.x+v.conf.lineCornerSmooth)+","+l.source.y;
-                pathSq += " Q"+l.target.x+","+l.source.y+","+l.target.x+","+(l.source.y-v.conf.lineCornerSmooth);
-                pathSq += " L"+l.target.x+","+(l.target.y + l.target.radius);
-                //console.log("We are here: 3");
-            }
-
-            if ((l.source.x > l.target.x) && (l.source.y < l.target.y)) {
-                pathSq = "M"+l.source.x+","+l.source.y;
-                pathSq += " L"+(l.target.x+v.conf.lineCornerSmooth)+","+l.source.y;
-                pathSq += " Q"+l.target.x+","+l.source.y+","+l.target.x+","+(l.source.y+v.conf.lineCornerSmooth);
-                pathSq += " L"+l.target.x+","+(l.target.y - l.target.radius);
-                //console.log("We are here: 4");
-            }
-
-        } else {
-
-
-            if ((l.source.x < l.target.x) && (l.source.y > l.target.y)) {
-                pathSq = "M"+l.source.x+" "+l.source.y;
-                pathSq += " L"+l.source.x+","+(l.target.y+v.conf.lineCornerSmooth);
-                pathSq += " Q"+l.source.x+","+l.target.y+","+(l.source.x+v.conf.lineCornerSmooth)+","+l.target.y;
-                pathSq += " L"+(l.target.x - l.target.radius)+","+l.target.y;
-                //console.log("We are here: 1");
-            }
-    
-            if ((l.source.x < l.target.x) && (l.source.y < l.target.y)) {
-                pathSq = "M"+l.source.x+","+l.source.y;
-                pathSq += " L"+l.source.x+","+(l.target.y-v.conf.lineCornerSmooth);
-                pathSq += " Q"+l.source.x+","+l.target.y+","+(l.source.x+v.conf.lineCornerSmooth)+","+l.target.y;
-                pathSq += " L"+(l.target.x - l.target.radius)+","+l.target.y;
-                //console.log("We are here: 2");
-            }
-    
-            if ((l.source.x > l.target.x) && (l.source.y > l.target.y)) {
-                pathSq = "M"+l.source.x+","+l.source.y;
-                pathSq += " L"+l.source.x+","+(l.target.y+v.conf.lineCornerSmooth);
-                pathSq += " Q"+l.source.x+","+l.target.y+","+(l.source.x-v.conf.lineCornerSmooth)+","+l.target.y;
-                pathSq += " L"+(l.target.x + l.target.radius)+","+l.target.y;
-                //console.log("We are here: 3");
-            }
-    
-            if ((l.source.x > l.target.x) && (l.source.y < l.target.y)) {
-                pathSq = "M"+l.source.x+","+l.source.y;
-                pathSq += " L"+l.source.x+","+(l.target.y-v.conf.lineCornerSmooth);
-                pathSq += " Q"+l.source.x+","+l.target.y+","+(l.source.x-v.conf.lineCornerSmooth)+","+l.target.y;
-                pathSq += " L"+(l.target.x + l.target.radius)+","+(l.target.y);
-                //console.log("We are here: 4");
-            }
-
-
-        }
-
-        
-        
-        //console.log("LINK : "+l.FROMID+" "+l.TOID);
-        return pathSq;
+       
+        return pathSq; //output
     };
 
     // create a path for self links
