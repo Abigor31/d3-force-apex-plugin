@@ -3694,12 +3694,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
             });
 
 			
-//Добавим тег foreignObject в соответствии с количеством узлов и присвоим класс =description + ID узла, 
+//Добавим тег foreignObject в соответствии с количеством узлов
+//внутрь добавим div и присвоим класс =description + ID узла, 
 //для связки текста с конкретным узлом
 //Для вставки html используем foreignObject 	
-	
-
-			
 				v.main.descriptions = v.dom.graph.selectAll("foreignObject")
 				.data(v.data.nodes,
 					function(n) { if(typeof(n.PARAM_SETTINGS)=="object")
@@ -3734,10 +3732,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*5}
 													 },
 								'height': function(n) {
-														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
-														else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2+"px"}
-														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius}
-														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*2}
+														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4)}
+														else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2}
+														else {return n.radius*2}
 													}
 							})
 				.append("xhtml:div")
@@ -3745,7 +3742,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						return "description"+n.ID;
 					})
 				.style({     "display": "table-cell",
-							 "vertical-align": "middle",
+							 "vertical-align": function(n) { 	if (n.NOTE_TYPE == 1){return "middle"}else{return "top"}},
 							 'width': function(n) { 	if (n.NOTE_TYPE == 1){return (n.radius*2+2+"px")}
 														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*3.5+"px"}
 														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*5+"px"}
@@ -3753,13 +3750,12 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 							 'height': function(n) {
 														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
 														else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2+"px"}
-														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius+"px"}
-														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*2+"px"}
+														else {return n.radius*2+"px"}
 													}
 				});
 				v.main.descriptions.exit().remove();
-	//Для каждого узла для тега foreignObject присвоим ему параметры в p 
-	//То есть ищем все foreignObject c классом 	= description + ID узла и добавляем туда p = количество параметров
+	//Для каждого узла для тега div присвоим ему параметры в p 
+	//То есть ищем все div c классом 	= description + ID узла и добавляем туда p = количество параметров
 
 				v.data.nodes.forEach(function(item, counter){
 					if(typeof(item.PARAM_SETTINGS)=="object"){
