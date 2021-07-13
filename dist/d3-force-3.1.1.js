@@ -3676,10 +3676,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						})
 						.style("color", function(n, i){return n.color})	 
 						.html (function (n) {
-											 var str = n.par;
-											 if ((n.par.length)< 7)
+											 var str = n.par + "";
+											 if ((str.length)< 7)
 											 {
-												for(var t=n.par.length; t<7; t++)
+												for(var t=str.length; t<7; t++)
 												{
 													str = str + "&nbsp;";
 												}
