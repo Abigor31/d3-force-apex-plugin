@@ -654,7 +654,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
             v.status.userAgentIe9To11 = true;
             v.tools.logError("Houston, we have a problem - user agent is IE 9, 10 or 11 - we have to provide a fix " +
                 "for markers: " +
-                "http://stackoverflow.com/questions/15588478/internet-explorer-10-not-showing-svg-path-d3-js-graph");
+                "http://stackoverflow.com/questions/15588478/internet-explorer-10-not-showing-svg-path-d3d3-js-graph");
         }
 
     }; // --> END v.main.setupConfiguration
@@ -885,7 +885,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						.filter(function(n) {return typeof(n.PARAM_SETTINGS) == "object"})
 						.attr("x", function(n) {
 							var xnote = 0;           
-							if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
+							if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius*2.5}
 							return xnote;
 						})
 						.attr("y", function(n) {
@@ -900,10 +900,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						.attr("d", function(n) {  
 													var contur = 0;
 													return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-															"L" + (n.x+n.radius*3) + "," + (n.y - n.radius+2)+" " + 
-															"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3+5)+","+(n.y - n.radius+7) + " " +
-															"L" + (n.x+n.radius*3+5) + "," + (n.y + n.radius-7) +
-															"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3)+","+(n.y + n.radius-2) + " " +
+															"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
+															"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
+															"L" + (n.x+n.radius*4+5) + "," + (n.y + n.radius-7) +
+															"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4)+","+(n.y + n.radius-2) + " " +
 															"L" + n.x + "," + (n.y + n.radius-2)
 												}
 							  );	
@@ -3644,10 +3644,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                     
 											}
 											return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-											"L" + (n.x+n.radius*3) + "," + (n.y - n.radius+2)+" " + 
-											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3+5)+","+(n.y - n.radius+7) + " " +
-											"L" + (n.x+n.radius*3+5) + "," + (n.y + n.radius-7) +
-											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3)+","+(n.y + n.radius-2) + " " +
+											"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
+											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
+											"L" + (n.x+n.radius*4+5) + "," + (n.y + n.radius-7) +
+											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4)+","+(n.y + n.radius-2) + " " +
 											"L" + n.x + "," + (n.y + n.radius-2)
 									}
 				)
@@ -3711,7 +3711,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 				.filter(function(n) {return typeof(n.PARAM_SETTINGS)=="object"})
 				.attr("x", function(n) {   
 						 var xnote = 0;           
-						 if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
+						 if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius*2.5}
 						 return xnote;
 						})
 				  
@@ -3727,9 +3727,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						 "display": "table"
 					  })
 				.attr({
-								'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*2+2)}
-														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*3.5}
-														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*5}
+								'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*3+2)}
+														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*5.5}
+														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*7}
 													 },
 								'height': function(n) {
 														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4)}
@@ -3743,9 +3743,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					})
 				.style({     "display": "table-cell",
 							 "vertical-align": function(n) { 	if (n.NOTE_TYPE == 1){return "middle"}else{return "top"}},
-							 'width': function(n) { 	if (n.NOTE_TYPE == 1){return (n.radius*2+2+"px")}
-														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*3.5+"px"}
-														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*5+"px"}
+							 'width': function(n) { 	if (n.NOTE_TYPE == 1){return (n.radius*3+2+"px")}
+														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*5.5+"px"}
+														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*7+"px"}
 												  },
 							 'height': function(n) {
 														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
@@ -3774,10 +3774,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						})
 						.style("color", function(n, i){return n.color})	 
 						.html (function (n) {
-											 var str = n.par + "";
-											 if ((str.length)< 7)
+											 var str = n.name+" " + n.par + " " + n.unit;
+											 if ((str.length)< 17)
 											 {
-												for(var t=str.length; t<7; t++)
+												for(var t=str.length; t<17; t++)
 												{
 													str = str + "&nbsp;";
 												}
