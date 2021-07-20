@@ -3728,8 +3728,8 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					  })
 				.attr({
 								'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*3+2)}
-														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*5.5}
-														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*7}
+														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*6}
+														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*7.5}
 													 },
 								'height': function(n) {
 														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4)}
@@ -3744,8 +3744,8 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 				.style({     "display": "table-cell",
 							 "vertical-align": function(n) { 	if (n.NOTE_TYPE == 1){return "middle"}else{return "top"}},
 							 'width': function(n) { 	if (n.NOTE_TYPE == 1){return (n.radius*3+2+"px")}
-														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*5.5+"px"}
-														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*7+"px"}
+														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*6+"px"}
+														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*7.5+"px"}
 												  },
 							 'height': function(n) {
 														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
