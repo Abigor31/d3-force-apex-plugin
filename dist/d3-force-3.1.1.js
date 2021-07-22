@@ -3774,7 +3774,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						})
 						.style("color", function(n, i){return n.color})	 
 						.html (function (n) {
-											 var str = n.name+" " + n.par + " " + n.unit;
+											 var str = ((n.name != undefined) ? n.name : "") + " " + n.par + " " + ((n.unit != undefined) ? n.unit : "");
 											 if ((str.length)< 17)
 											 {
 												for(var t=str.length; t<17; t++)
