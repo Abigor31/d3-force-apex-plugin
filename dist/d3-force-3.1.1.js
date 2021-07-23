@@ -3721,13 +3721,11 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						return ynote;
 						})
 				.style({ "color": function(n) {return v.tools.color(n.COLORDESCR)},
-						 "overflow": "hidden",
-						 "text-align": "center",
-						 "font-size": "small",
-						 "display": "table"
+						 "overflow": "auto",
+						 "font-size": "small"
 					  })
 				.attr({
-								'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*3+2)}
+								'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*3+29)}
 														else if (n.radius>=28 && n.NOTE_TYPE == 2){return n.radius*6}
 														else if (n.radius<28 && n.NOTE_TYPE == 2){return n.radius*7.5}
 													 },
@@ -3751,7 +3749,8 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
 														else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2+"px"}
 														else {return n.radius*2+"px"}
-													}
+													},
+							'text-align':'right'						
 				});
 				v.main.descriptions.exit().remove();
 	//Для каждого узла для тега div присвоим ему параметры в p 
