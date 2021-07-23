@@ -884,21 +884,18 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					v.main.descriptions
 						.filter(function(n) {return typeof(n.PARAM_SETTINGS) == "object"})
 						.attr("x", function(n) {
-							var xnote = 0;           
-							if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-150}
-							return xnote;
-						})
+													return n.NOTE_TYPE == 1 ? n.x+n.radius+2 : n.x-150
+												}	
+							)
 						.attr("y", function(n) {
-							var ynote = 0;       
-							if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
-							return ynote;
-						});
+													return n.NOTE_TYPE == 1 ? n.y - n.radius+2 : n.y + n.radius+2
+												}
+							);
 					
 	//Привязка рамки к ноду во время перетаскивания узла
 					v.main.contur 
 						.filter(function(n) {return n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS) == "object"})
 						.attr("d", function(n) {  
-													var contur = 0;
 													return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
 															"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
 															"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
@@ -3623,17 +3620,20 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 //Контурная рамка для показателя
 			 v.main.contur = v.dom.graph.selectAll("path.note")
             .data(v.data.nodes,
-                function(n) {if(n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS)=="object")
-								{ 
-									return n.ID;
+					function(n) {
+									if(n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS)=="object")
+									{ 
+										return n.ID;
+									}
 								}
-                });
+				);
+			
 			v.main.contur	
 			.enter()
 			.append("path")
 			.filter(function(n) {return n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS)=="object"})
 			.attr("class", "note")
-			.attr("d", function(n) { var contur = 0;
+			.attr("d", function(n) { 		
 											if (!n.fixed && !n.x) {
 												n.x = Math.floor((Math.random() * v.tools.getGraphWidth()) + 1);
 											}
@@ -3650,8 +3650,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 									}
 				)
 			.style( "stroke", function(n) {
-                return v.tools.color(n.COLORVALUE);
-            })
+											return v.tools.color(n.COLORVALUE);
+										}
+				  )
 			.style("fill", function(n) {return n.COLORFILL ? n.COLORFILL : "none" })
 			.style("stroke-width", 2);
 			v.main.contur.exit().remove();
@@ -3698,34 +3699,34 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 //Для вставки html используем foreignObject 	
 				v.main.descriptions = v.dom.graph.selectAll("foreignObject")
 				.data(v.data.nodes,
-					function(n) { if(typeof(n.PARAM_SETTINGS)=="object")
-									{
-										return n.ID;
+									function(n) 
+									{ 
+										if(typeof(n.PARAM_SETTINGS)=="object")
+											{
+												return n.ID;
+											}
 									}
-					});
+					);
+				
 				v.main.descriptions
 				.enter()
 				.append("foreignObject")
 				.filter(function(n) {return typeof(n.PARAM_SETTINGS)=="object"})
 				.attr("x", function(n) {   
-										 var xnote = 0;           
-										 if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-150}
-										 return xnote;
+											n.NOTE_TYPE == 1 ? n.x+n.radius+2 : n.x-150
 										}
 					)
 				.attr("y", function(n) { 
-											var ynote = 0;       
-											if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
-											return ynote;
+											n.NOTE_TYPE == 1 ? n.y - n.radius+2 : n.y + n.radius+2
 										}
 					 )
 				.style({ "color": function(n) {return v.tools.color(n.COLORDESCR)},
-						 "overflow": "auto",
+						 "overflow": function(n){ return v.status.userAgent.indexOf("Edge")== -1 ?  "auto" : "hidden"},
 						 "font-size": "small"
 					  })
 				.attr({
 						'width': function(n){ 
-												if (n.NOTE_TYPE == 1){return (n.radius*3+29)}else{return 327}
+												return n.NOTE_TYPE == 1 ? n.radius*3+29 : 327
 											},
 						'height': function(n){
 												if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4)}
@@ -3735,21 +3736,23 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					})
 				.append("xhtml:div")
 				.attr("class", function(n) {
-						return "description"+n.ID;
-					})
-				.style({     "display": "table-cell",
-							 "vertical-align": function(n) { 
-																if (n.NOTE_TYPE == 1){return "middle"}else{return "top"} 
-															},
-							 'width': function(n)  {
-														if (n.NOTE_TYPE == 1){return (n.radius*3+2+"px")}else{return 300+"px"} 
+												return "description"+n.ID;
+											}
+					)
+				.style({     
+						"display": "table-cell",
+						"vertical-align": function(n) { 
+														return n.NOTE_TYPE == 1 ? "middle" : "top" 
 													},
-							 'height': function(n) {
-														if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
-														else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2+"px"}
-														else {return 64+"px"}
-													},
-							'text-align':'left'						
+						'width': function(n)  {
+													return n.NOTE_TYPE == 1 ? n.radius*3+2+"px" : 300+"px" 
+												},
+						'height': function(n) {
+													if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
+													else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2+"px"}
+													else {return 64+"px"}
+												},
+						'text-align':'left'						
 				});
 				v.main.descriptions.exit().remove();
 	//Для каждого узла для тега div присвоим ему параметры в p 
@@ -3775,7 +3778,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						})
 						.style("color", function(n, i){return n.color})
 						.html (function (n) {
-											 var str = ((n.name != undefined) ? n.name : "") + " " + n.par + " " + ((n.unit != undefined) ? n.unit : "");
+											 var str = ((n.name !== undefined) ? n.name : "") + " " + n.par + " " + ((n.unit !== undefined) ? n.unit : "");
 											 return str;
 											 });
 						v.main.tdescr.exit().remove();
