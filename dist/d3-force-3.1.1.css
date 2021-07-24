@@ -227,6 +227,8 @@
     float: left;
     text-align: right;
     margin: 0;
+	height: 14px;
+    overflow: hidden;
 	/*padding-right: 10px;*/
 }
 
@@ -235,9 +237,13 @@
     float: right;
     text-align: left;
     margin: 0;
+	height: 14px;
+    overflow: hidden;
 	/*padding-left: 10px;*/
 }
 /*класс для NOTE_TYPE = 1*/
 .notecenter{
 	margin: 0;
+	height: 14px;
+    overflow: hidden;
 }
