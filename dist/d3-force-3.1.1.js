@@ -3748,7 +3748,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 													return n.NOTE_TYPE == 1 ? n.radius*3+2+"px" : 300+"px" 
 												},
 						'height': function(n) {
-													if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
+													if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-5+"px")}
 													else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2+"px"}
 													else {return 64+"px"}
 												},
