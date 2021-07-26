@@ -654,7 +654,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
             v.status.userAgentIe9To11 = true;
             v.tools.logError("Houston, we have a problem - user agent is IE 9, 10 or 11 - we have to provide a fix " +
                 "for markers: " +
-                "http://stackoverflow.com/questions/15588478/internet-explorer-10-not-showing-svg-path-d3-js-graph");
+                "http://stackoverflow.com/questions/15588478/internet-explorer-10-not-showing-svg-path-d3d3-js-graph");
         }
 
     }; // --> END v.main.setupConfiguration
@@ -884,26 +884,23 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					v.main.descriptions
 						.filter(function(n) {return typeof(n.PARAM_SETTINGS) == "object"})
 						.attr("x", function(n) {
-							var xnote = 0;           
-							if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
-							return xnote;
-						})
+													return n.NOTE_TYPE == 1 ? n.x+n.radius+2 : n.x-150
+												}	
+							)
 						.attr("y", function(n) {
-							var ynote = 0;       
-							if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
-							return ynote;
-						});
+													return n.NOTE_TYPE == 1 ? n.y - n.radius+2 : n.y + n.radius+2
+												}
+							);
 					
 	//Привязка рамки к ноду во время перетаскивания узла
 					v.main.contur 
 						.filter(function(n) {return n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS) == "object"})
 						.attr("d", function(n) {  
-													var contur = 0;
 													return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-															"L" + (n.x+n.radius*3) + "," + (n.y - n.radius+2)+" " + 
-															"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3+5)+","+(n.y - n.radius+7) + " " +
-															"L" + (n.x+n.radius*3+5) + "," + (n.y + n.radius-7) +
-															"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3)+","+(n.y + n.radius-2) + " " +
+															"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
+															"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
+															"L" + (n.x+n.radius*4+5) + "," + (n.y + n.radius-7) +
+															"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4)+","+(n.y + n.radius-2) + " " +
 															"L" + n.x + "," + (n.y + n.radius-2)
 												}
 							  );	
@@ -1728,7 +1725,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 		//для случая с foreignObject - XHTML
 		//и выделение рамки
 		if(typeof(node.PARAM_SETTINGS)=="object"){
-			v.main.descriptions.filter(".description"+node.ID).style("font-weight", "bold");
+			v.main.descriptions.selectAll("div").filter(".description"+node.ID).style("font-weight", "bold");
 			//v.main.contur.filter(function(n) {return n.NOTE_TYPE == 1}).classed("note_highlight", true);
 		};
 		
@@ -1780,7 +1777,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 		//для случая с foreignObject - XHTML
 		//Снятие выделения с показателей и с рамки типа узла 1
 		if(typeof(node.PARAM_SETTINGS)=="object"){
-			v.main.descriptions.filter(".description"+node.ID).style("font-weight", "normal");
+			v.main.descriptions.selectAll("div").filter(".description"+node.ID).style("font-weight", "normal");
 		//v.main.contur.filter(function(n) {return n.NOTE_TYPE == 1}).classed("note_highlight", false);
 		};
 		
@@ -3621,21 +3618,22 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                 });
         });
 //Контурная рамка для показателя
-
-			
 			 v.main.contur = v.dom.graph.selectAll("path.note")
             .data(v.data.nodes,
-                function(n) {if(n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS)=="object")
-								{ 
-									return n.ID;
+					function(n) {
+									if(n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS)=="object")
+									{ 
+										return n.ID;
+									}
 								}
-                });
+				);
+			
 			v.main.contur	
 			.enter()
 			.append("path")
 			.filter(function(n) {return n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS)=="object"})
 			.attr("class", "note")
-			.attr("d", function(n) { var contur = 0;
+			.attr("d", function(n) { 		
 											if (!n.fixed && !n.x) {
 												n.x = Math.floor((Math.random() * v.tools.getGraphWidth()) + 1);
 											}
@@ -3644,16 +3642,17 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                     
 											}
 											return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-											"L" + (n.x+n.radius*3) + "," + (n.y - n.radius+2)+" " + 
-											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3+5)+","+(n.y - n.radius+7) + " " +
-											"L" + (n.x+n.radius*3+5) + "," + (n.y + n.radius-7) +
-											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*3)+","+(n.y + n.radius-2) + " " +
+											"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
+											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
+											"L" + (n.x+n.radius*4+5) + "," + (n.y + n.radius-7) +
+											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4)+","+(n.y + n.radius-2) + " " +
 											"L" + n.x + "," + (n.y + n.radius-2)
 									}
 				)
 			.style( "stroke", function(n) {
-                return v.tools.color(n.COLORVALUE);
-            })
+											return v.tools.color(n.COLORVALUE);
+										}
+				  )
 			.style("fill", function(n) {return n.COLORFILL ? n.COLORFILL : "none" })
 			.style("stroke-width", 2);
 			v.main.contur.exit().remove();
@@ -3694,83 +3693,99 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
             });
 
 			
-//Добавим тег foreignObject в соответствии с количеством узлов и присвоим класс =description + ID узла, 
+//Добавим тег foreignObject в соответствии с количеством узлов
+//внутрь добавим div и присвоим класс =description + ID узла, 
 //для связки текста с конкретным узлом
 //Для вставки html используем foreignObject 	
-	
-
-			
 				v.main.descriptions = v.dom.graph.selectAll("foreignObject")
 				.data(v.data.nodes,
-					function(n) { if(typeof(n.PARAM_SETTINGS)=="object")
-									{
-										return n.ID;
+									function(n) 
+									{ 
+										if(typeof(n.PARAM_SETTINGS)=="object")
+											{
+												return n.ID;
+											}
 									}
-					});
+					);
+				
 				v.main.descriptions
 				.enter()
 				.append("foreignObject")
 				.filter(function(n) {return typeof(n.PARAM_SETTINGS)=="object"})
-				.attr("class", function(n) {
-						return "description"+n.ID;
-					})
 				.attr("x", function(n) {   
-						 var xnote = 0;           
-						 if(n.NOTE_TYPE == 1){ xnote = n.x+n.radius+2}else{xnote = n.x-n.radius-20}
-						 return xnote;
-						})
-				  
+											n.NOTE_TYPE == 1 ? n.x+n.radius+2 : n.x-150
+										}
+					)
 				.attr("y", function(n) { 
-						var ynote = 0;       
-						if(n.NOTE_TYPE == 1){ynote = n.y - n.radius+2}else{ynote = n.y + n.radius+2}
-						return ynote;
-						})
+											n.NOTE_TYPE == 1 ? n.y - n.radius+2 : n.y + n.radius+2
+										}
+					 )
 				.style({ "color": function(n) {return v.tools.color(n.COLORDESCR)},
-						 "overflow": "hidden",
-						 "text-align": "center",
+						 "overflow": function(n){ return v.status.userAgent.indexOf("Edge")== -1 ?  "auto" : "hidden"},
 						 "font-size": "small"
 					  })
 				.attr({
-								'width': function(n) { if (n.NOTE_TYPE == 1){return (n.radius*2+2)}else{return n.radius*3.5}},
-								'height': function(n) {if(n.radius>4){return (n.radius*2-4)}else{return n.radius*2}}
-							});
+						'width': function(n){ 
+												return n.NOTE_TYPE == 1 ? n.radius*3+29 : 327
+											},
+						'height': function(n){
+												if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4)}
+												else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2}
+												else {return 64}
+											}
+					})
+				.append("xhtml:div")
+				.attr("class", function(n) {
+												return "description"+n.ID;
+											}
+					)
+				.style({     
+						"display": "table-cell",
+						"vertical-align": function(n) { 
+														return n.NOTE_TYPE == 1 ? "middle" : "top" 
+													},
+						'width': function(n)  {
+													return n.NOTE_TYPE == 1 ? n.radius*3+2+"px" : 300+"px" 
+												},
+						'height': function(n) {
+													if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
+													else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2+"px"}
+													else {return 64+"px"}
+												},
+						'text-align':'left'						
+				});
 				v.main.descriptions.exit().remove();
-	//Для каждого узла для тега foreignObject присвоим ему параметры в p 
-	//То есть ищем все foreignObject c классом 	= description + ID узла и добавляем туда p = количество параметров
+	//Для каждого узла для тега div присвоим ему параметры в p 
+	//То есть ищем все div c классом 	= description + ID узла и добавляем туда p = количество параметров
 
 				v.data.nodes.forEach(function(item, counter){
 					if(typeof(item.PARAM_SETTINGS)=="object"){
 						var check=1;
-						v.main.tdescr = v.main.descriptions.filter(".description"+item.ID).selectAll("p").filter(".descrip"+item.ID)
-						.data(item.PARAM_SETTINGS, function(n, i){ return n.par+i })
+						v.main.tdescr = v.main.descriptions.selectAll("div").filter(".description"+item.ID).selectAll("p").filter(".descrip"+item.ID)
+						.data(item.PARAM_SETTINGS, function(n, i){ return n.par+i });
+						
+						v.main.tdescr
 						.enter()
 						.append("xhtml:p")
-						.attr("class", function(n){ return "descrip"+item.ID })
-						.style( {
-								"margin": 0,
-								//"font-size": 10+"px",
-								"float": function(n){
-									if (item.NOTE_TYPE == 2){
-										if (check % 2 == 0){check = check + 1; return "right"}else{check = check + 1; return "left"}}
-									}
+						.attr("class", function(n){ if (item.NOTE_TYPE == 2)
+													{
+														if (check % 2 == 0){check = check + 1; return "descrip"+item.ID+" noteright"}else{check = check + 1; return "descrip"+item.ID+" noteleft"}
+													}
+													else
+													{
+														return "descrip"+item.ID+" notecenter"
+													}
 						})
-						.style("color", function(n, i){return n.color})	 
+						.style("color", function(n, i){return n.color})
 						.html (function (n) {
-											 var str = n.par + "";
-											 if ((str.length)< 7)
-											 {
-												for(var t=str.length; t<7; t++)
-												{
-													str = str + "&nbsp;";
-												}
-												
-											 } 
+											 var str = ((n.name !== undefined) ? n.name : "") + " " + n.par + " " + ((n.unit !== undefined) ? n.unit : "");
 											 return str;
-											 })	
+											 });
+						v.main.tdescr.exit().remove();
 					};						 
 				});   
+				
 
-			
         // LABELS
 
         if (v.conf.showLabels) {
