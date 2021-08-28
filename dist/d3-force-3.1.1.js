@@ -3618,6 +3618,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                 });
         });
 //Контурная рамка для показателя
+			//очистим существующие рамки и перерисуем заново
+			v.dom.svg.selectAll("path.note").remove();
+			
 			 v.main.contur = v.dom.graph.selectAll("path.note")
             .data(v.data.nodes,
 					function(n) {
@@ -3630,7 +3633,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			
 			v.main.contur	
 			.enter()
-			.append("path")
+			.append("svg:path")
 			.filter(function(n) {return n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS)=="object"})
 			.attr("class", "note")
 			.attr("d", function(n) { 		
@@ -3658,6 +3661,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			v.main.contur.exit().remove();
 			
         // NODES
+		//очистим существующие узлы и перерисуем заново
+		v.dom.svg.selectAll("circle.node").remove();
+		
         v.main.nodes = v.dom.graph.selectAll("circle.node")
             .data(v.data.nodes,
                 function(n) {
@@ -3696,7 +3702,12 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 //Добавим тег foreignObject в соответствии с количеством узлов
 //внутрь добавим div и присвоим класс =description + ID узла, 
 //для связки текста с конкретным узлом
-//Для вставки html используем foreignObject 	
+//Для вставки html используем foreignObject 
+				
+				//очистим существующие подписи и перерисуем
+				v.dom.svg.selectAll("foreignObject").remove();
+			
+				
 				v.main.descriptions = v.dom.graph.selectAll("foreignObject")
 				.data(v.data.nodes,
 									function(n) 
