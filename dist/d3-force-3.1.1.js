@@ -3510,6 +3510,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
         v.main.markers.exit().remove();
 
         // LINKS
+		//очистим существующие пути и перерисуем заново
+		v.dom.svg.selectAll("path").remove();
+		
         v.main.links = v.dom.graph.selectAll("path.link_sq")
             .data(v.data.links.filter(function(l) {
                     return l.FROMID !== l.TOID;
@@ -3619,7 +3622,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
         });
 //Контурная рамка для показателя
 			//очистим существующие рамки и перерисуем заново
-			v.dom.svg.selectAll("path.note").remove();
+			//v.dom.svg.selectAll("path.note").remove();
 			
 			 v.main.contur = v.dom.graph.selectAll("path.note")
             .data(v.data.nodes,
