@@ -3512,6 +3512,11 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
         // LINKS
 		//очистим существующие пути и перерисуем заново
 		v.dom.svg.selectAll("path").remove();
+		 
+		v.dom.svg.selectAll("defs marker")
+            .append("svg:path")
+            .attr("d", "M0,0 L10,5 L0,10");
+		
 		
         v.main.links = v.dom.graph.selectAll("path.link_sq")
             .data(v.data.links.filter(function(l) {
