@@ -897,10 +897,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						.filter(function(n) {return n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS) == "object"})
 						.attr("d", function(n) {  
 													return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-															"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
-															"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
-															"L" + (n.x+n.radius*4+5) + "," + (n.y + n.radius-7) +
-															"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4)+","+(n.y + n.radius-2) + " " +
+															"L" + (n.x+n.radius*4.5) + "," + (n.y - n.radius+2)+" " + 
+															"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.5+5)+","+(n.y - n.radius+7) + " " +
+															"L" + (n.x+n.radius*4.5+5) + "," + (n.y + n.radius-7) +
+															"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.5)+","+(n.y + n.radius-2) + " " +
 															"L" + n.x + "," + (n.y + n.radius-2)
 												}
 							  );	
@@ -3510,6 +3510,14 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
         v.main.markers.exit().remove();
 
         // LINKS
+		//очистим существующие пути и перерисуем заново
+		v.dom.svg.selectAll("path").remove();
+		 
+		v.dom.svg.selectAll("defs marker")
+            .append("svg:path")
+            .attr("d", "M0,0 L10,5 L0,10");
+		
+		
         v.main.links = v.dom.graph.selectAll("path.link_sq")
             .data(v.data.links.filter(function(l) {
                     return l.FROMID !== l.TOID;
@@ -3618,6 +3626,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                 });
         });
 //Контурная рамка для показателя
+			//очистим существующие рамки и перерисуем заново
+			//v.dom.svg.selectAll("path.note").remove();
+			
 			 v.main.contur = v.dom.graph.selectAll("path.note")
             .data(v.data.nodes,
 					function(n) {
@@ -3630,7 +3641,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			
 			v.main.contur	
 			.enter()
-			.append("path")
+			.append("svg:path")
 			.filter(function(n) {return n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS)=="object"})
 			.attr("class", "note")
 			.attr("d", function(n) { 		
@@ -3642,10 +3653,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                     
 											}
 											return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-											"L" + (n.x+n.radius*4) + "," + (n.y - n.radius+2)+" " + 
-											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4+5)+","+(n.y - n.radius+7) + " " +
-											"L" + (n.x+n.radius*4+5) + "," + (n.y + n.radius-7) +
-											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4)+","+(n.y + n.radius-2) + " " +
+											"L" + (n.x+n.radius*4.5) + "," + (n.y - n.radius+2)+" " + 
+											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.5+5)+","+(n.y - n.radius+7) + " " +
+											"L" + (n.x+n.radius*4.5+5) + "," + (n.y + n.radius-7) +
+											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.5)+","+(n.y + n.radius-2) + " " +
 											"L" + n.x + "," + (n.y + n.radius-2)
 									}
 				)
@@ -3658,6 +3669,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			v.main.contur.exit().remove();
 			
         // NODES
+		//очистим существующие узлы и перерисуем заново
+		v.dom.svg.selectAll("circle.node").remove();
+		
         v.main.nodes = v.dom.graph.selectAll("circle.node")
             .data(v.data.nodes,
                 function(n) {
@@ -3696,7 +3710,12 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 //Добавим тег foreignObject в соответствии с количеством узлов
 //внутрь добавим div и присвоим класс =description + ID узла, 
 //для связки текста с конкретным узлом
-//Для вставки html используем foreignObject 	
+//Для вставки html используем foreignObject 
+				
+				//очистим существующие подписи и перерисуем
+				v.dom.svg.selectAll("foreignObject").remove();
+			
+				
 				v.main.descriptions = v.dom.graph.selectAll("foreignObject")
 				.data(v.data.nodes,
 									function(n) 
@@ -3722,11 +3741,15 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					 )
 				.style({ "color": function(n) {return v.tools.color(n.COLORDESCR)},
 						 "overflow": function(n){ return v.status.userAgent.indexOf("Edge")== -1 ?  "auto" : "hidden"},
-						 "font-size": "small"
+						 
 					  })
+				.attr("class", function(n) {
+												return "fs";
+											}
+					)
 				.attr({
 						'width': function(n){ 
-												return n.NOTE_TYPE == 1 ? n.radius*3+29 : 327
+												return n.NOTE_TYPE == 1 ? n.radius*3.5+29 : 327
 											},
 						'height': function(n){
 												if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4)}
@@ -3745,12 +3768,12 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 														return n.NOTE_TYPE == 1 ? "middle" : "top" 
 													},
 						'width': function(n)  {
-													return n.NOTE_TYPE == 1 ? n.radius*3+2+"px" : 300+"px" 
+													return n.NOTE_TYPE == 1 ? n.radius*3.5+2+"px" : 300+"px" 
 												},
 						'height': function(n) {
-													if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4+"px")}
+													if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-5+"px")}
 													else if (n.radius<4 && n.NOTE_TYPE == 1) {return n.radius*2+"px"}
-													else {return 64+"px"}
+													else {return 63+"px"}
 												},
 						'text-align':'left'						
 				});
