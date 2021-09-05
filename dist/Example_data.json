@@ -1,58 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>D3 Force Network Chart</title>
-</head>
-
-<body style="font-family:Arial, Helvetica, sans-serif">
-  <h2>D3 Force Network Chart 3.1.1 Example Page</h2>
-  <p>To play around with the graph options click the "Customize Me" link.</p>
-  <p>For more informations also see <a href="https://ogobrecht.github.io/d3-force-apex-plugin/" target="_blank">the
-      docs</a>. <button onclick="example.useDomParentWidth((example.useDomParentWidth()?false:true))">Toggle option
-      useDomParentWidth</button></p>
-  <div id="example"></div>
-  <div id="barData"></div>
-  <p>The customization wizard, which opens by clicking the link "Customize me", is not intended to used by end users
-    (and also not on small devices) - it is a convenience helper for developers to better understand the implications
-    of the different graph options.</p>
-  <p>The link is only shown, when the debug mode is switched on, which is the case here for demonstration purposes. The
-    debug mode writes many informations to the browser console - it should be switched off in a production environment.</p>
-  <link href="d3-force-3.1.1.css" rel="stylesheet" type="text/css">
-  <script src="lib/resize-observer-polyfill/ResizeObserver-1.5.0.min.js"></script>
-  <script src="lib/d3/d3-3.5.6.min.js"></script>
-  <script src="d3-force-3.1.1.js"></script>
-  
-  <script>
-    window.onload = function () {
-      example = netGobrechtsD3Force('example')
-        .width(600)
-        .height(400)
-		.gravity (0)
-		.linkStrength (0)
-		.friction (0)
-		.theta (0)
-        .useDomParentWidth(true) //for responsive layout
-        .zoomMode(true)
-        .pinMode(true)
-        .lassoMode(true)
-        .wrapLabels(true)
-		.maxNodeRadius(36)
-		.minNodeRadius(36)
-        .onNodeClickFunction(function(event, data){
-                /*console.log("Node click - event:", event);
-                console.log("Node click - data:", data);
-                console.log("Node click - this:", this);*/
-                if (data) {
-                    D3BarLineData.SetBarDataObject(data);
-                }
-                
-              })
-        .debug(true) //to enable the customization wizard
-        .render({
+{
     "data": {
         "nodes": [
             {
@@ -71,7 +17,6 @@
                     {
                         "name": "Плн. отгр.",
                         "full_name": "План Изъято горной массы за смену",
-                        "is_plan": 1,
                         "unit": "т",
                         "par": 10000,
                         "color": "#0087db"
@@ -79,20 +24,19 @@
                     {
                         "name": "Фкт. отгр.",
                         "full_name": "Факт Изъято горной массы за смену",
-                        "is_plan": 0,
                         "unit": "т",
                         "par": 130,
                         "color": "red"
                     }
                 ],
                 "LABELCIRCULAR": false,
-                "px": 0,
                 "radius": 32,
-                "py": 280,
                 "possible": false,
                 "selected": false,
                 "index": 0,
-                "weight": 3
+                "weight": 3,
+                "px": 0,
+                "py": 280
             },
             {
                 "ID": 2,
@@ -111,7 +55,6 @@
                     {
                         "name": "Плн. првз.",
                         "full_name": "План Перевезено горной массы за смену",
-                        "is_plan": 1,
                         "unit": "т",
                         "par": 10000,
                         "color": "#0087db"
@@ -119,7 +62,6 @@
                     {
                         "name": "Фкт. првз.",
                         "full_name": "Факт Перевезено горной массы за смену",
-                        "is_plan": 0,
                         "unit": "т",
                         "par": 130,
                         "color": "red"
@@ -127,12 +69,12 @@
                 ],
                 "LABELCIRCULAR": false,
                 "radius": 32,
-                "px": 220,
-                "py": 280,
                 "possible": false,
                 "selected": false,
                 "index": 1,
-                "weight": 2
+                "weight": 2,
+                "px": 220,
+                "py": 280
             },
             {
                 "ID": 3,
@@ -150,7 +92,6 @@
                     {
                         "name": "Плн. пост.",
                         "full_name": "План Принято горной массы за смену",
-                        "is_plan": 1,
                         "unit": "т",
                         "par": 10000,
                         "color": "#0087db"
@@ -158,7 +99,6 @@
                     {
                         "name": "Фкт. пост.",
                         "full_name": "Факт Принято горной массы за смену",
-                        "is_plan": 0,
                         "unit": "т",
                         "par": 130,
                         "color": "red"
@@ -166,7 +106,6 @@
                     {
                         "name": "Плн. отгр.",
                         "full_name": "План Отгружено за смену",
-                        "is_plan": 1,
                         "unit": "т",
                         "par": 10000,
                         "color": "#0087db"
@@ -174,7 +113,6 @@
                     {
                         "name": "Фкт. отгр.",
                         "full_name": "Факт Отгружено за смену",
-                        "is_plan": 0,
                         "unit": "т",
                         "par": 3356,
                         "color": "red"
@@ -182,12 +120,12 @@
                 ],
                 "LABELCIRCULAR": false,
                 "radius": 32,
-                "px": 520,
-                "py": 280,
                 "possible": false,
                 "selected": false,
                 "index": 2,
-                "weight": 3
+                "weight": 3,
+                "px": 520,
+                "py": 280
             },
             {
                 "ID": 4,
@@ -204,12 +142,12 @@
                 "NOTE_TYPE": 1,
                 "LABELCIRCULAR": false,
                 "radius": 32,
-                "px": 220,
-                "py": 440,
                 "possible": false,
                 "selected": false,
                 "index": 3,
-                "weight": 2
+                "weight": 2,
+                "px": 220,
+                "py": 440
             },
             {
                 "ID": 5,
@@ -226,12 +164,12 @@
                 "NOTE_TYPE": 1,
                 "LABELCIRCULAR": false,
                 "radius": 32,
-                "px": 780,
-                "py": 120,
                 "possible": false,
                 "selected": false,
                 "index": 4,
-                "weight": 2
+                "weight": 2,
+                "px": 780,
+                "py": 120
             },
             {
                 "ID": 6,
@@ -249,7 +187,6 @@
                     {
                         "name": "Плн. пост. (пс)",
                         "full_name": "План Поступление руды на ДСФ (паспорт) за смену",
-                        "is_plan": 1,
                         "unit": "т",
                         "par": 10000,
                         "color": "#0087db"
@@ -257,7 +194,6 @@
                     {
                         "name": "Фкт. пост. (пс)",
                         "full_name": "Факт Поступление руды на ДСФ (паспорт) за смену",
-                        "is_plan": 0,
                         "unit": "т",
                         "par": 2246,
                         "color": "red"
@@ -265,12 +201,12 @@
                 ],
                 "LABELCIRCULAR": false,
                 "radius": 32,
-                "px": 1060,
-                "py": 280,
                 "possible": false,
                 "selected": false,
                 "index": 5,
-                "weight": 2
+                "weight": 2,
+                "px": 1060,
+                "py": 280
             },
             {
                 "ID": 7,
@@ -289,7 +225,6 @@
                     {
                         "name": "Фкт. загр.",
                         "full_name": "Факт Загружено горной породы за смену",
-                        "is_plan": 0,
                         "unit": "т",
                         "par": 3356,
                         "color": "green"
@@ -297,7 +232,6 @@
                     {
                         "name": "Фкт. разгр.",
                         "full_name": "Факт Разгружено горной породы за смену",
-                        "is_plan": 0,
                         "unit": "т",
                         "par": 2246,
                         "color": "green"
@@ -305,12 +239,12 @@
                 ],
                 "LABELCIRCULAR": false,
                 "radius": 32,
-                "px": 780,
-                "py": 280,
                 "possible": false,
                 "selected": false,
                 "index": 6,
-                "weight": 2
+                "weight": 2,
+                "px": 780,
+                "py": 280
             }
         ],
         "links": [
@@ -335,7 +269,6 @@
                         {
                             "name": "Плн. отгр.",
                             "full_name": "План Изъято горной массы за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -343,20 +276,19 @@
                         {
                             "name": "Фкт. отгр.",
                             "full_name": "Факт Изъято горной массы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 130,
                             "color": "red"
                         }
                     ],
                     "LABELCIRCULAR": false,
-                    "px": 0,
                     "radius": 32,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 0,
-                    "weight": 3
+                    "weight": 3,
+                    "px": 0,
+                    "py": 280
                 },
                 "target": {
                     "ID": 2,
@@ -375,7 +307,6 @@
                         {
                             "name": "Плн. првз.",
                             "full_name": "План Перевезено горной массы за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -383,7 +314,6 @@
                         {
                             "name": "Фкт. првз.",
                             "full_name": "Факт Перевезено горной массы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 130,
                             "color": "red"
@@ -391,12 +321,12 @@
                     ],
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 220,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 1,
-                    "weight": 2
+                    "weight": 2,
+                    "px": 220,
+                    "py": 280
                 }
             },
             {
@@ -421,7 +351,6 @@
                         {
                             "name": "Плн. првз.",
                             "full_name": "План Перевезено горной массы за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -429,7 +358,6 @@
                         {
                             "name": "Фкт. првз.",
                             "full_name": "Факт Перевезено горной массы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 130,
                             "color": "red"
@@ -437,12 +365,12 @@
                     ],
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 220,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 1,
-                    "weight": 2
+                    "weight": 2,
+                    "px": 220,
+                    "py": 280
                 },
                 "target": {
                     "ID": 3,
@@ -460,7 +388,6 @@
                         {
                             "name": "Плн. пост.",
                             "full_name": "План Принято горной массы за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -468,7 +395,6 @@
                         {
                             "name": "Фкт. пост.",
                             "full_name": "Факт Принято горной массы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 130,
                             "color": "red"
@@ -476,7 +402,6 @@
                         {
                             "name": "Плн. отгр.",
                             "full_name": "План Отгружено за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -484,7 +409,6 @@
                         {
                             "name": "Фкт. отгр.",
                             "full_name": "Факт Отгружено за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 3356,
                             "color": "red"
@@ -492,12 +416,12 @@
                     ],
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 520,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 2,
-                    "weight": 3
+                    "weight": 3,
+                    "px": 520,
+                    "py": 280
                 }
             },
             {
@@ -520,12 +444,12 @@
                     "NOTE_TYPE": 1,
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 220,
-                    "py": 440,
                     "possible": false,
                     "selected": false,
                     "index": 3,
-                    "weight": 2
+                    "weight": 2,
+                    "px": 220,
+                    "py": 440
                 },
                 "target": {
                     "ID": 3,
@@ -543,7 +467,6 @@
                         {
                             "name": "Плн. пост.",
                             "full_name": "План Принято горной массы за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -551,7 +474,6 @@
                         {
                             "name": "Фкт. пост.",
                             "full_name": "Факт Принято горной массы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 130,
                             "color": "red"
@@ -559,7 +481,6 @@
                         {
                             "name": "Плн. отгр.",
                             "full_name": "План Отгружено за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -567,7 +488,6 @@
                         {
                             "name": "Фкт. отгр.",
                             "full_name": "Факт Отгружено за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 3356,
                             "color": "red"
@@ -575,12 +495,12 @@
                     ],
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 520,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 2,
-                    "weight": 3
+                    "weight": 3,
+                    "px": 520,
+                    "py": 280
                 }
             },
             {
@@ -604,7 +524,6 @@
                         {
                             "name": "Плн. отгр.",
                             "full_name": "План Изъято горной массы за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -612,20 +531,19 @@
                         {
                             "name": "Фкт. отгр.",
                             "full_name": "Факт Изъято горной массы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 130,
                             "color": "red"
                         }
                     ],
                     "LABELCIRCULAR": false,
-                    "px": 0,
                     "radius": 32,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 0,
-                    "weight": 3
+                    "weight": 3,
+                    "px": 0,
+                    "py": 280
                 },
                 "target": {
                     "ID": 4,
@@ -642,12 +560,12 @@
                     "NOTE_TYPE": 1,
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 220,
-                    "py": 440,
                     "possible": false,
                     "selected": false,
                     "index": 3,
-                    "weight": 2
+                    "weight": 2,
+                    "px": 220,
+                    "py": 440
                 }
             },
             {
@@ -671,7 +589,6 @@
                         {
                             "name": "Плн. отгр.",
                             "full_name": "План Изъято горной массы за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -679,20 +596,19 @@
                         {
                             "name": "Фкт. отгр.",
                             "full_name": "Факт Изъято горной массы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 130,
                             "color": "red"
                         }
                     ],
                     "LABELCIRCULAR": false,
-                    "px": 0,
                     "radius": 32,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 0,
-                    "weight": 3
+                    "weight": 3,
+                    "px": 0,
+                    "py": 280
                 },
                 "target": {
                     "ID": 5,
@@ -709,12 +625,12 @@
                     "NOTE_TYPE": 1,
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 780,
-                    "py": 120,
                     "possible": false,
                     "selected": false,
                     "index": 4,
-                    "weight": 2
+                    "weight": 2,
+                    "px": 780,
+                    "py": 120
                 }
             },
             {
@@ -737,12 +653,12 @@
                     "NOTE_TYPE": 1,
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 780,
-                    "py": 120,
                     "possible": false,
                     "selected": false,
                     "index": 4,
-                    "weight": 2
+                    "weight": 2,
+                    "px": 780,
+                    "py": 120
                 },
                 "target": {
                     "ID": 6,
@@ -760,7 +676,6 @@
                         {
                             "name": "Плн. пост. (пс)",
                             "full_name": "План Поступление руды на ДСФ (паспорт) за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -768,7 +683,6 @@
                         {
                             "name": "Фкт. пост. (пс)",
                             "full_name": "Факт Поступление руды на ДСФ (паспорт) за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 2246,
                             "color": "red"
@@ -776,12 +690,12 @@
                     ],
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 1060,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 5,
-                    "weight": 2
+                    "weight": 2,
+                    "px": 1060,
+                    "py": 280
                 }
             },
             {
@@ -806,7 +720,6 @@
                         {
                             "name": "Фкт. загр.",
                             "full_name": "Факт Загружено горной породы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 3356,
                             "color": "green"
@@ -814,7 +727,6 @@
                         {
                             "name": "Фкт. разгр.",
                             "full_name": "Факт Разгружено горной породы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 2246,
                             "color": "green"
@@ -822,12 +734,12 @@
                     ],
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 780,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 6,
-                    "weight": 2
+                    "weight": 2,
+                    "px": 780,
+                    "py": 280
                 },
                 "target": {
                     "ID": 6,
@@ -845,7 +757,6 @@
                         {
                             "name": "Плн. пост. (пс)",
                             "full_name": "План Поступление руды на ДСФ (паспорт) за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -853,7 +764,6 @@
                         {
                             "name": "Фкт. пост. (пс)",
                             "full_name": "Факт Поступление руды на ДСФ (паспорт) за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 2246,
                             "color": "red"
@@ -861,12 +771,12 @@
                     ],
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 1060,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 5,
-                    "weight": 2
+                    "weight": 2,
+                    "px": 1060,
+                    "py": 280
                 }
             },
             {
@@ -890,7 +800,6 @@
                         {
                             "name": "Плн. пост.",
                             "full_name": "План Принято горной массы за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -898,7 +807,6 @@
                         {
                             "name": "Фкт. пост.",
                             "full_name": "Факт Принято горной массы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 130,
                             "color": "red"
@@ -906,7 +814,6 @@
                         {
                             "name": "Плн. отгр.",
                             "full_name": "План Отгружено за смену",
-                            "is_plan": 1,
                             "unit": "т",
                             "par": 10000,
                             "color": "#0087db"
@@ -914,7 +821,6 @@
                         {
                             "name": "Фкт. отгр.",
                             "full_name": "Факт Отгружено за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 3356,
                             "color": "red"
@@ -922,12 +828,12 @@
                     ],
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 520,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 2,
-                    "weight": 3
+                    "weight": 3,
+                    "px": 520,
+                    "py": 280
                 },
                 "target": {
                     "ID": 7,
@@ -946,7 +852,6 @@
                         {
                             "name": "Фкт. загр.",
                             "full_name": "Факт Загружено горной породы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 3356,
                             "color": "green"
@@ -954,7 +859,6 @@
                         {
                             "name": "Фкт. разгр.",
                             "full_name": "Факт Разгружено горной породы за смену",
-                            "is_plan": 0,
                             "unit": "т",
                             "par": 2246,
                             "color": "green"
@@ -962,23 +866,14 @@
                     ],
                     "LABELCIRCULAR": false,
                     "radius": 32,
-                    "px": 780,
-                    "py": 280,
                     "possible": false,
                     "selected": false,
                     "index": 6,
-                    "weight": 2
+                    "weight": 2,
+                    "px": 780,
+                    "py": 280
                 }
             }
         ]
     }
 }
-    
-); //sample data is provided when called without data
-      //see also https://ogobrecht.github.io/d3-force-apex-plugin/tutorial-1-getting-started.html
-    }
-  </script>
-  <script src="barDataD3.js"></script>
-</body>
-
-</html>
