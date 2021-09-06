@@ -3669,6 +3669,9 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 			v.main.contur.exit().remove();
 			
         // NODES
+		//сохраним выделенный узел на схеме
+		var sel = v.dom.graph.selectAll("circle.selected");
+		
 		//очистим существующие узлы и перерисуем заново
 		v.dom.svg.selectAll("circle.node").remove();
 		
@@ -3679,6 +3682,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                 });
         v.main.nodes.enter().append("svg:circle")
             .attr("class", "node")
+			.attr("id",
+                function(n) {
+                    return "n"+n.ID;
+                })
             .attr("cx", function(n) {
                 if (!n.fixed && !n.x) {
                     n.x = Math.floor((Math.random() * v.tools.getGraphWidth()) + 1);
@@ -3696,8 +3703,26 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
             .on("click", v.tools.onNodeClick)
             .on("dblclick", v.tools.onNodeDblclick)
             .on("contextmenu", v.tools.onNodeContextmenu);
+			
         v.main.nodes.exit().remove();
-        // update all
+        
+		//выделим ранее выделенный узел	после обновления схемы	
+		if (sel[0][0]){
+					//если при перерисовке узла нет, то скидываем выделение на первый узел
+					if (v.main.nodes.filter("#"+v.dom.containerId+" #"+sel[0][0].id)[0][0] == undefined){
+						v.dom.graph.select("#"+v.dom.containerId+" .node")
+						.attr("class", "node selected");
+					}else{
+						v.main.nodes.filter("#"+v.dom.containerId+" #"+sel[0][0].id)
+						.attr("class", "node selected");
+					}
+			}else{
+		//если узел не выделен, то выделим первый нод в доме (карьер) при загрузке страницы	
+				v.dom.graph.select("#"+v.dom.containerId+" .node")
+				.attr("class", "node selected");
+			};
+		
+		// update all
         v.main.nodes
             .attr("r", function(n) {
                 return n.radius;
