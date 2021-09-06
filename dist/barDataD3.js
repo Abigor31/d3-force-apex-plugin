@@ -165,7 +165,7 @@ var D3BarLineData = function () {
                                             .attr("dy", ".15em")
                                             .attr("dx", ".35em")
                                             .attr("class","text-in-bar")
-                                            .text(d.key + " - " + tfactdata[0].par + " " + tfactdata[0].unit);
+                                            .text(d.key + ": " + tfactdata[0].par + " " + tfactdata[0].unit);
                         } else {
                             d3.select(this)         
                                 .append("text")
