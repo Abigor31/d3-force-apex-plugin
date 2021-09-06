@@ -42,7 +42,22 @@
         .wrapLabels(true)
 		.maxNodeRadius(36)
 		.minNodeRadius(36)
+		.autoRefresh (true)
+		.refreshInterval (10000)
         .onNodeClickFunction(function(event, data){
+		//Если нужна логика (клик - узел выделился, клик на этот же узел - выделение снято, то надо раскомментить .//код ниже)
+//let check = this.classList.contains("selected");
+
+			let allElements = Array.from(document.querySelectorAll('.selected'))
+			for (let element of allElements) {
+			  element.classList.remove('selected')
+}
+
+//if (!check){
+    this.classList.add("selected");  
+//};        
+
+		
                 /*console.log("Node click - event:", event);
                 console.log("Node click - data:", data);
                 console.log("Node click - this:", this);*/
