@@ -596,7 +596,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 
         
         v.conf.lineCornerSmooth = v.confUser.lineCornerSmooth || v.confDefaults.lineCornerSmooth.val;
-        console.log(v.conf)
+        
         // initialize sample data
         /* jshint -W110 */
         v.data.sampleData = '<data>' +
