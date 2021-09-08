@@ -734,7 +734,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
             .append("svg:text")
             .attr("x", width / 2)
             .attr("y", height / 2)
-            .text("Loading...");
+            .text("Загрузка...");
 
         // create marker definitions
         v.dom.defs
@@ -1242,7 +1242,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
     v.tools.logError = function(message) {
         console.log(v.status.debugPrefix + "ERROR: " + message);
         if (v.status.customize && v.dom.customizeLog) {
-            v.dom.customizeLog.text("ERROR: " + message + "\n" + v.dom.customizeLog.text());
+            v.dom.customizeLog.text("Ошибка: " + message + "\n" + v.dom.customizeLog.text());
         }
     };
 
@@ -1918,7 +1918,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
         return {
             "nodes": [{
                 "ID": "1",
-                "LABEL": "ERROR: " + message,
+                "LABEL": "Ошибка: " + message,
                 "COLORVALUE": "1",
                 "SIZEVALUE": "1"
             }],
@@ -1930,7 +1930,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
     v.tools.getNodesDataWithMessage = function (message) {
         return [{
                 "ID": "1",
-                "LABEL": "ERROR: " + message,
+                "LABEL": "Ошибка: " + message,
                 "COLORVALUE": "1",
                 "SIZEVALUE": "1"
             }];
@@ -3206,7 +3206,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                                 "data": {
                                     "nodes": [{
                                         "ID": "1",
-                                        "LABEL": "ERROR: No data.",
+                                        "LABEL": "Ошибка: Нет данных.",
                                         "COLORVALUE": "1",
                                         "SIZEVALUE": "1"
                                     }],
@@ -3219,7 +3219,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                                 "data": {
                                     "nodes": [{
                                         "ID": "1",
-                                        "LABEL": "ERROR: " + dataString + ".",
+                                        "LABEL": "Ошибка: " + dataString + ".",
                                         "COLORVALUE": "1",
                                         "SIZEVALUE": "1"
                                     }],
@@ -3234,7 +3234,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                             "data": {
                                 "nodes": [{
                                     "ID": "1",
-                                    "LABEL": "AJAX call terminated with errors.",
+                                    "LABEL": "Асинхронный вызов завершился с ошибкой.",
                                     "COLORVALUE": "1",
                                     "SIZEVALUE": "1"
                                 }],
