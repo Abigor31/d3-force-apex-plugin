@@ -38,7 +38,7 @@ var D3BarLineData = function () {
             mleft = 20;
         
         height = 50;
-        oneRowHeight = 70;
+        oneRowHeight = 90;
         barHeight = 40;
 
         //Init start
@@ -136,7 +136,7 @@ var D3BarLineData = function () {
 
                         if (tplandata.length>0) {
 
-                            if (tplandata[0].parpertime > 0) {
+                            if ((tplandata[0].parpertime > 0) && (tplandata[0].parpertime < tplandata[0].par)) {
                                 d3.select(this).append("g")
                                 .attr("id","planpertimeid-"+i)
                                 
@@ -144,7 +144,7 @@ var D3BarLineData = function () {
                                     .attr("x", x(tplandata[0].parpertime))
                                     .attr("dx", "-.35em")
                                     .attr("y", oneRowHeight*(i))
-                                    .attr("dy", "5.25em")
+                                    .attr("dy", "5.6em")
                                     .style("text-anchor","end")
 									.attr("class","plan-text")
                                     .text("Ожидаемое: "+tplandata[0].parpertime+" "+tplandata[0].unit);
@@ -177,7 +177,7 @@ var D3BarLineData = function () {
                                     .attr("x", x(tplandata[0].par))
                                     .attr("dx", "-.35em")
                                     .attr("y", oneRowHeight*(i))
-                                    .attr("dy", "1.55em")
+                                    .attr("dy", "1.6em")
                                     .style("text-anchor","end")
 									.attr("class","plan-text")
                                     .text("План: "+tplandata[0].par+" "+tplandata[0].unit);
