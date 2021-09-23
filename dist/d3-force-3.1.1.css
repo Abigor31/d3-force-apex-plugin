@@ -245,7 +245,7 @@
 .notecenter{
 	margin: 0;
 	height: 14px;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .fs{
