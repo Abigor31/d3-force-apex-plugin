@@ -3206,7 +3206,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                                 "data": {
                                     "nodes": [{
                                         "ID": "1",
-                                        "LABEL": "Ошибка: Нет данных.",
+                                        "LABEL": "Для схемы по выбранным Вами параметрам данные отсутствуют.",
                                         "COLORVALUE": "1",
                                         "SIZEVALUE": "1"
                                     }],
@@ -3234,7 +3234,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                             "data": {
                                 "nodes": [{
                                     "ID": "1",
-                                    "LABEL": "Асинхронный вызов завершился с ошибкой.",
+                                    "LABEL": "Пожалуйста, перезагрузите страницу. Время сессии истекло.",
                                     "COLORVALUE": "1",
                                     "SIZEVALUE": "1"
                                 }],
