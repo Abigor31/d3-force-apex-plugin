@@ -38,7 +38,7 @@ var D3BarLineData = function () {
             mleft = 20;
         
         height = 50;
-        oneRowHeight = 70;
+        oneRowHeight = 90;
         barHeight = 40;
 
         //Init start
@@ -117,6 +117,7 @@ var D3BarLineData = function () {
 										.attr("height", barHeight-5)
 										.attr("rx", 10)
 										.attr("ry", 10)
+                                        //.attr("fill", "lightgray")
 										.attr("width", x(tplandata[0].par)); 
 						}
                         if (tfactdata.length>0) {
@@ -134,6 +135,41 @@ var D3BarLineData = function () {
                         
 
                         if (tplandata.length>0) {
+
+                            if ((tplandata[0].parpertime > 0) && (tplandata[0].parpertime < tplandata[0].par)) {
+                                d3.select(this).append("g")
+                                .attr("id","planpertimeid-"+i)
+                                
+                                .append("text")
+                                    .attr("x", x(tplandata[0].parpertime))
+                                    .attr("dx", "-.35em")
+                                    .attr("y", oneRowHeight*(i))
+                                    .attr("dy", "5.6em")
+                                    .style("text-anchor","end")
+									.attr("class","plan-text")
+                                    .text("Ожидаемое: "+tplandata[0].parpertime+" "+tplandata[0].unit);
+
+                                    d3.select(this).append("g")
+                                    .attr("id","planpertimelineid-"+i)
+                                    .append("line")
+                                        .attr("x1", x(tplandata[0].parpertime))
+                                        .attr("y1", oneRowHeight*(i+1))
+                                        .attr("x2", x(tplandata[0].parpertime))
+                                        .attr("y2", oneRowHeight*(i+1) - barHeight - 5)
+                                        //.attr("stroke", "black")
+                                        .attr("class","plan-line");
+
+                                        d3.select(this).append("g")
+                                        .attr("id","planpertimelineidml-"+i)
+                                        .append("line")
+                                            .attr("x1", x(tplandata[0].parpertime))
+                                            .attr("y1", oneRowHeight*(i+1))
+                                            .attr("x2", x(tplandata[0].parpertime)-5)
+                                            .attr("y2", oneRowHeight*(i+1))
+                                            //.attr("stroke", "black")
+                                            .attr("class","plan-line");
+                            }
+
                             d3.select(this).append("g")
                                 .attr("id","planid-"+i)
                                 
@@ -141,7 +177,7 @@ var D3BarLineData = function () {
                                     .attr("x", x(tplandata[0].par))
                                     .attr("dx", "-.35em")
                                     .attr("y", oneRowHeight*(i))
-                                    .attr("dy", "1.55em")
+                                    .attr("dy", "1.6em")
                                     .style("text-anchor","end")
 									.attr("class","plan-text")
                                     .text("План: "+tplandata[0].par+" "+tplandata[0].unit);
@@ -152,7 +188,17 @@ var D3BarLineData = function () {
                                     .attr("y1", oneRowHeight*(i+1))
                                     .attr("x2", x(tplandata[0].par))
                                     .attr("y2", oneRowHeight*(i+1) - barHeight - 5)
+                                    //.attr("stroke", "black")
                                     .attr("class","plan-line");
+                                    d3.select(this).append("g")
+                                    .attr("id","planlineidml-"+i)
+                                    .append("line")
+                                        .attr("x1", x(tplandata[0].par))
+                                        .attr("y1", oneRowHeight*(i+1) - barHeight - 5)
+                                        .attr("x2", x(tplandata[0].par)-5)
+                                        .attr("y2", oneRowHeight*(i+1) - barHeight - 5)
+                                        //.attr("stroke", "black")
+                                        .attr("class","plan-line");
                         }
                         
                         d3.select(this).attr("y", oneRowHeight*(i+1))
