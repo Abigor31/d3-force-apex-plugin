@@ -205,21 +205,58 @@ var D3BarLineData = function () {
                                     .attr("id", "barid-"+i);
                         if (tfactdata.length>0) {
                             d3.select(this)         
-                                            .append("text")
+                                            .append("foreignObject")
                                             .attr("x", 0)
-                                            .attr("y", oneRowHeight*(i+1)-(barHeight/2))
+                                            .attr("y", oneRowHeight*(i+1)-(barHeight))
                                             .attr("dy", ".15em")
                                             .attr("dx", ".35em")
                                             .attr("class","text-in-bar")
+                                            .attr({
+                                                'width': x(tfactdata[0].par),
+                                                'height': barHeight
+                                            })
+                                            .append("xhtml:div")
+                                            .attr("class","text-in-bar-div")
+                                            .style({     
+                                                "display": "table-cell",
+                                                "vertical-align": "middle",
+                                                'width': x(tfactdata[0].par) + "px",
+                                                'height': "35px",
+                                                'text-align':'left'						
+                                            })
+                                            .append("xhtml:p")
+                                            .attr("class","text-in-bar-p")
+                                            .style({
+                                                "margin-left": "10px"
+                                            })
                                             .text(d.key + ": " + tfactdata[0].par + " " + tfactdata[0].unit);
                         } else {
                             d3.select(this)         
-                                .append("text")
+                            .append("foreignObject")
                                 .attr("x", 0)
-                                .attr("y", oneRowHeight*(i+1)-(barHeight/2))
+                                .attr("y", oneRowHeight*(i+1)-(barHeight))
                                 .attr("dy", ".15em")
                                 .attr("dx", ".35em")
                                 .attr("class","text-in-bar")
+                                            .attr({
+                                                'width': width-margin.right,
+                                                'height': barHeight
+                                                
+                                            })
+                                .append("xhtml:div")
+                                .attr("class","text-in-bar-div")
+                                .style({     
+                                    "display": "table-cell",
+                                    "vertical-align": "middle",
+                                    'width': width-margin.right + "px",
+                                    'height': "35px",
+                                    'text-align':'left'						
+                                })
+                                .append("xhtml:p")
+                                .style({
+                                    "margin-left": "10px"
+                                })
+                                .attr("class","text-in-bar-p")
                                 .text(d.key);
                         }
                     });
