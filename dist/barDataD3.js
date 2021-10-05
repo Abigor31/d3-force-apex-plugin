@@ -73,6 +73,10 @@ var D3BarLineData = function () {
             var GrouppedData = d3.nest()
                                 .key(d => d.full_name.slice(5))
                                 .entries(BarDataObject.PARAM_SETTINGS);
+            GrouppedData.forEach(function (el) {
+                el.values = el.values.filter(d => {return d.par != 0});
+            });
+            GrouppedData = GrouppedData.filter(d => {return d.values.length})
             
             height = oneRowHeight*GrouppedData.length;
             SVGContainer.attr("height", height  + margin.top + margin.bottom);
