@@ -147,8 +147,8 @@ var D3BarLineData = function () {
                                 .append("text")
                                     .attr("x", x(tplandata[0].parpertime))
                                     .attr("dx", "-.35em")
-                                    .attr("y", oneRowHeight*(i))
-                                    .attr("dy", "5.6em")
+                                    .attr("y", oneRowHeight*(i+1))
+                                    .attr("dy", ".6em")
                                     .style("text-anchor","end")
 									.attr("class","plan-text")
                                     .text("Ожидаемое: "+tplandata[0].parpertime+" "+tplandata[0].unit);
@@ -216,7 +216,7 @@ var D3BarLineData = function () {
                                             .attr("dx", ".35em")
                                             .attr("class","text-in-bar")
                                             .attr({
-                                                'width': x(tfactdata[0].par),
+                                                'width': width-margin.right + "px",
                                                 'height': barHeight
                                             })
                                             .append("xhtml:div")
@@ -224,7 +224,7 @@ var D3BarLineData = function () {
                                             .style({     
                                                 "display": "table-cell",
                                                 "vertical-align": "middle",
-                                                'width': x(tfactdata[0].par) + "px",
+                                                'width': width-margin.right + "px",
                                                 'height': "35px",
                                                 'text-align':'left'						
                                             })
