@@ -146,7 +146,7 @@ var D3BarLineData = function () {
                                 
                                 .append("text")
                                     .attr("x", x(tplandata[0].parpertime))
-                                    .attr("dx", "-.35em")
+                                    
                                     .attr("y", oneRowHeight*(i+1))
                                     .attr("dy", ".6em")
 									.attr("class","plan-text")
@@ -156,9 +156,13 @@ var D3BarLineData = function () {
                                     let curposition = x(tplandata[0].parpertime);
 
                                     if (textwidth >= curposition) {
-                                        waitingtext.style("text-anchor","start")
+                                        waitingtext
+                                            .style("text-anchor","start")
+                                            .attr("dx", ".35em")
                                     } else {
-                                        waitingtext.style("text-anchor","end")
+                                        waitingtext
+                                            .style("text-anchor","end")
+                                            .attr("dx", "-.35em")
                                     }
 
                                     d3.select(this).append("g")
