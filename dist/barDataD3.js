@@ -141,7 +141,7 @@ var D3BarLineData = function () {
                         if (tplandata.length>0) {
 
                             if ((tplandata[0].parpertime > 0) && (tplandata[0].parpertime < tplandata[0].par)) {
-                                d3.select(this).append("g")
+                                let waitingtext = d3.select(this).append("g")
                                 .attr("id","planpertimeid-"+i)
                                 
                                 .append("text")
@@ -149,9 +149,17 @@ var D3BarLineData = function () {
                                     .attr("dx", "-.35em")
                                     .attr("y", oneRowHeight*(i+1))
                                     .attr("dy", ".6em")
-                                    .style("text-anchor","end")
 									.attr("class","plan-text")
                                     .text("Ожидаемое: "+tplandata[0].parpertime+" "+tplandata[0].unit);
+                                
+                                    let textwidth = waitingtext.node().getBoundingClientRect().width;
+                                    let curposition = x(tplandata[0].parpertime);
+
+                                    if (textwidth >= curposition) {
+                                        waitingtext.style("text-anchor","start")
+                                    } else {
+                                        waitingtext.style("text-anchor","end")
+                                    }
 
                                     d3.select(this).append("g")
                                     .attr("id","planpertimelineid-"+i)
