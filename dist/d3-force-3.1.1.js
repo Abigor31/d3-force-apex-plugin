@@ -897,10 +897,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 						.filter(function(n) {return n.NOTE_TYPE == 1 && typeof(n.PARAM_SETTINGS) == "object"})
 						.attr("d", function(n) {  
 													return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-															"L" + (n.x+n.radius*4.5) + "," + (n.y - n.radius+2)+" " + 
-															"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.5+5)+","+(n.y - n.radius+7) + " " +
-															"L" + (n.x+n.radius*4.5+5) + "," + (n.y + n.radius-7) +
-															"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.5)+","+(n.y + n.radius-2) + " " +
+															"L" + (n.x+n.radius*4.9) + "," + (n.y - n.radius+2)+" " + 
+															"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.9+5)+","+(n.y - n.radius+7) + " " +
+															"L" + (n.x+n.radius*4.9+5) + "," + (n.y + n.radius-7) +
+															"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.9)+","+(n.y + n.radius-2) + " " +
 															"L" + n.x + "," + (n.y + n.radius-2)
 												}
 							  );	
@@ -3653,10 +3653,10 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
                     
 											}
 											return "M" + n.x + "," + (n.y - n.radius+2) + " " + 
-											"L" + (n.x+n.radius*4.5) + "," + (n.y - n.radius+2)+" " + 
-											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.5+5)+","+(n.y - n.radius+7) + " " +
-											"L" + (n.x+n.radius*4.5+5) + "," + (n.y + n.radius-7) +
-											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.5)+","+(n.y + n.radius-2) + " " +
+											"L" + (n.x+n.radius*4.9) + "," + (n.y - n.radius+2)+" " + 
+											"A" + 5 + "," + 5 +" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.9+5)+","+(n.y - n.radius+7) + " " +
+											"L" + (n.x+n.radius*4.9+5) + "," + (n.y + n.radius-7) +
+											"A" + 5 + "," + 5+" "+0+" "+0+" ,"+ 1 + " "+ (n.x+n.radius*4.9)+","+(n.y + n.radius-2) + " " +
 											"L" + n.x + "," + (n.y + n.radius-2)
 									}
 				)
@@ -3774,7 +3774,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 					)
 				.attr({
 						'width': function(n){ 
-												return n.NOTE_TYPE == 1 ? n.radius*3.5+29 : 327
+												return n.NOTE_TYPE == 1 ? n.radius*3.9+29 : 327
 											},
 						'height': function(n){
 												if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-4)}
@@ -3793,7 +3793,7 @@ function netGobrechtsD3Force(domContainerId, options, apexPluginId, apexPageItem
 														return n.NOTE_TYPE == 1 ? "middle" : "top" 
 													},
 						'width': function(n)  {
-													return n.NOTE_TYPE == 1 ? n.radius*3.5+2+"px" : 300+"px" 
+													return n.NOTE_TYPE == 1 ? n.radius*3.9+2+"px" : 300+"px" 
 												},
 						'height': function(n) {
 													if (n.radius>=4 && n.NOTE_TYPE == 1){return (n.radius*2-5+"px")}
